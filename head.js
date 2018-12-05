@@ -14,5 +14,16 @@
   node ./head.js -c 5 file1 file2
 */
 
+const { readFileSync } = require("fs");
 
+const { split, getInput, varifyInputs } = require("./src/lib.js");
 
+const main = function() {
+  let inputs = getInput();
+  let { fileName, linesToSlice } = varifyInputs(inputs);
+  let data = readFileSync(fileName, "utf8");
+  let result = split(data, "\n").slice(0, linesToSlice);
+  console.log(result.join("\n"));
+}
+
+main();
