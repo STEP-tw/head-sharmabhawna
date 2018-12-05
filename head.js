@@ -16,11 +16,11 @@
 
 const { readFileSync } = require("fs");
 
-const { split, getInput, varifyInputs, getContents } = require("./src/lib.js");
+const { varifyInputs, getContents } = require("./src/lib.js");
 
 const main = function() {
-  let { option, count, files } = varifyInputs(getInput());
-  return getContents(readFileSync, option, count, files);
+  let { option, count, files } = varifyInputs(process.argv.slice(2));
+  console.log(getContents(readFileSync, option, count, files));
 }
 
-console.log(main());
+main();

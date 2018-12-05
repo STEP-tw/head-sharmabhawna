@@ -1,11 +1,3 @@
-const getInput = function() {
-  let inputs = [];
-  for(let i = 2; i < process.argv.length; i++){
-    inputs.push(process.argv[i]);
-  }
-  return inputs;
-}
-
 const extractOption = function(choice) {
   let option = "n";
   if(choice.startsWith("-c")){
@@ -40,4 +32,4 @@ const getContents = function(reader, option, count, files) {
   return content.slice(0, count).join(splitor);
 }
 
-module.exports = { split, getInput, varifyInputs, getContents };
+module.exports = { varifyInputs, getContents };
