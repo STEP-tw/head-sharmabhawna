@@ -7,9 +7,8 @@ const getInput = function() {
 }
 
 const varifyInputs = function(inputs) {
-  if(inputs.length == 1){
-    return { fileName : inputs[0], linesToSlice : 10 };
-  }
+  let result = { firstFile : inputs[0], linesToSlice : 10 };
+  return result;
 }
 
 const split= function(data, symbol) {

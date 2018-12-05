@@ -20,8 +20,8 @@ const { split, getInput, varifyInputs } = require("./src/lib.js");
 
 const main = function() {
   let inputs = getInput();
-  let { fileName, linesToSlice } = varifyInputs(inputs);
-  let data = readFileSync(fileName, "utf8");
+  let { firstFile, linesToSlice } = varifyInputs(inputs);
+  let data = readFileSync(firstFile, "utf8");
   let result = split(data, "\n").slice(0, linesToSlice);
   console.log(result.join("\n"));
 }
