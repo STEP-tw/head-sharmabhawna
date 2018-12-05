@@ -31,10 +31,6 @@ const varifyInputs = function(inputs) {
   return result;
 }
 
-const split = function(data, symbol) {
-  return data.split(symbol);
-}
-
 const getContents = function(reader, option, count, files) {
   let splitor = "\n";
   if(option == "c"){
