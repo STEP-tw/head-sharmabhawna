@@ -16,14 +16,11 @@
 
 const { readFileSync } = require("fs");
 
-const { split, getInput, varifyInputs } = require("./src/lib.js");
+const { split, getInput, varifyInputs, getContents } = require("./src/lib.js");
 
 const main = function() {
-  let inputs = getInput();
-  let { firstFile, linesToSlice } = varifyInputs(inputs);
-  let data = readFileSync(firstFile, "utf8");
-  let result = split(data, "\n").slice(0, linesToSlice);
-  console.log(result.join("\n"));
+  let { option, count, files } = varifyInputs(getInput());
+  return getContents(readFileSync, option, count, files);
 }
 
-main();
+console.log(main());
