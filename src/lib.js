@@ -6,7 +6,7 @@ const extractOption = function(input) {
   return option;
 }
 
-const varifyInputs = function(inputs) {
+const segregateInputs = function(inputs) {
   let result = { option : "n", count : 10, files : inputs };
   result.option = extractOption(inputs[0]);
 
@@ -26,7 +26,7 @@ const varifyInputs = function(inputs) {
   return result;
 }
 
-const getContent = function(reader, option, count, file) {
+const extractContent = function(reader, option, count, file) {
   let splitor = "\n";
   if(option == "c"){
     splitor = "";
@@ -34,14 +34,14 @@ const getContent = function(reader, option, count, file) {
   return reader(file, "utf8").split(splitor).slice(0,count).join(splitor);
 }
 
-const getHeadContent = function(reader, option, count, files) {
-  let extractContent = getContent.bind(null, reader, option, count);
+const head = function(reader, option, count, files) {
+  let extractData = extractContent.bind(null, reader, option, count);
    if(files.length == 1){
-     return extractContent(files[0]);
+     return extractData(files[0]);
   }
   return files.map(function(file){
     let heading = "\n==> "+file+" <==\n";
-    return heading + extractContent(file) } ).join("\n").slice(1);
+    return heading + extractData(file) } ).join("\n").slice(1);
 }
 
-module.exports = { extractOption, varifyInputs, getHeadContent, getContent, getHeadContent };
+module.exports = { extractOption, segregateInputs, head, extractContent };
