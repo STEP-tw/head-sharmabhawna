@@ -34,7 +34,7 @@ const extractContent = function(reader, option, count, file) {
   return reader(file, "utf8").split(splitor).slice(0,count).join(splitor);
 }
 
-const head = function(reader, option, count, files) {
+const head = function(reader, { option, count, files }) {
   let extractData = extractContent.bind(null, reader, option, count);
    if(files.length == 1){
      return extractData(files[0]);

@@ -68,23 +68,23 @@ describe("extractContent", function(){
 
 describe("head", function(){
   it("should return given no of bytes of one file if option is c", function(){
-    equal(head(reader, "c", 1, ["file"]), "T");
-    equal(head(reader, "c", 2, ["file"]), "Th");
+    equal(head(reader, { option : "c", count : 1, files : ["file"] }), "T");
+    equal(head(reader, { option : "c", count : 2, files : ["file"] }), "Th");
   });
 
   it("should return given no of lines of one file if option is n", function(){
-    equal(head(reader, "n", 1, ["file"]), "This is first line.");
-    equal(head(reader, "n", 2, ["file"]), "This is first line.\nThis is second line.");
+    equal(head(reader, { option : "n", count : 1, files : ["file"] }), "This is first line.");
+    equal(head(reader, { option : "n", count : 2, files : ["file"] }), "This is first line.\nThis is second line.");
   });
 
   it("should return given no of bytes of all files seperated by file names if option is c", function(){
-    equal(head(reader, "c", 1, ["file", "file"]), "==> file <==\nT\n\n==> file <==\nT");
-    equal(head(reader, "c", 2, ["file", "file"]), "==> file <==\nTh\n\n==> file <==\nTh");
+    equal(head(reader, { option : "c", count : 1, files : ["file", "file"] }), "==> file <==\nT\n\n==> file <==\nT");
+    equal(head(reader, { option : "c", count : 2, files : ["file", "file"] }), "==> file <==\nTh\n\n==> file <==\nTh");
   });
   
   it("should return given no of lines of all files seperated by file names if option is n", function(){
-    equal(head(reader, "n", 1, ["file", "file"]), "==> file <==\nThis is first line.\n\n==> file <==\nThis is first line.");
-    equal(head(reader, "n", 2, ["file", "file"]), "==> file <==\nThis is first line.\nThis is second line.\n\n==> file <==\nThis is first line.\nThis is second line.");
+    equal(head(reader, { option : "n", count : 1, files : ["file", "file"] }), "==> file <==\nThis is first line.\n\n==> file <==\nThis is first line.");
+    equal(head(reader, { option : "n", count : 2, files : ["file", "file"] }), "==> file <==\nThis is first line.\nThis is second line.\n\n==> file <==\nThis is first line.\nThis is second line.");
   });
 });
 

@@ -19,8 +19,8 @@ const { readFileSync } = require("fs");
 const { segregateInputs, head } = require("./src/lib.js");
 
 const main = function() {
-  let { option, count, files } = segregateInputs(process.argv.slice(2));
-  console.log(head(readFileSync, option, count, files));
+  let inputs = segregateInputs(process.argv.slice(2));
+  console.log(head(readFileSync, inputs));
 }
 
 main();
