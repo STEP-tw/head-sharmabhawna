@@ -1,3 +1,7 @@
+let lineCountError = "illegal line count -- ";
+
+let byteCountError = "illegal byte count -- ";
+
 const extractOption = function(input) {
   let option = "n";
   if(input.startsWith("-c")){
@@ -35,6 +39,9 @@ const extractContent = function(reader, option, count, file) {
 }
 
 const head = function(reader, { option, count, files }) {
+  if(count == 0 || isNaN(count)){
+    return option == "n" ? lineCountError + count : byteCountError + count;
+  }
   let extractData = extractContent.bind(null, reader, option, count);
    if(files.length == 1){
      return extractData(files[0]);
