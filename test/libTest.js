@@ -1,6 +1,6 @@
 const { equal, deepEqual } = require("assert");
 
-const { extractOption, varifyInputs } = require("../src/lib.js");
+const { extractOption, varifyInputs, getContent, getHeadContent } = require("../src/lib.js");
 
 describe("varifyInputs", function(){
   it("should return object containing n as defult option and 10 as defult count value", function(){
@@ -45,6 +45,46 @@ describe("extractOption", function(){
     equal(extractOption("-n"), "n");
     equal(extractOption("-n5"), "n");
     equal(extractOption("file"), "n");
+  });
+});
+
+let file = "This is first line."+"\n"+"This is second line."+"\n"+"This is third line."
+
+const reader = function(x, unicode) {
+  return file;
+}
+
+describe("getContent", function(){
+  it("should return given no of bytes of given file if option is c", function(){
+    equal(getContent(reader, "c", "1", "file"), "T");
+    equal(getContent(reader, "c", "2", "file"), "Th");
+  });
+
+  it("should return given no of lines of given file if option is n", function(){
+    equal(getContent(reader, "n", "1", "file"), "This is first line.");
+    equal(getContent(reader, "n", "2", "file"), "This is first line."+"\n"+"This is second line.");
+  });
+});
+
+describe("getHeadContent", function(){
+  it("should return given no of bytes of one file if option is c", function(){
+    equal(getHeadContent(reader, "c", 1, ["file"]), "T");
+    equal(getHeadContent(reader, "c", 2, ["file"]), "Th");
+  });
+
+  it("should return given no of lines of one file if option is n", function(){
+    equal(getHeadContent(reader, "n", 1, ["file"]), "This is first line.");
+    equal(getHeadContent(reader, "n", 2, ["file"]), "This is first line."+"\n"+"This is second line.");
+  });
+
+  it("should return given no of bytes of all files seperated by file names if option is c", function(){
+    equal(getHeadContent(reader, "c", 1, ["file", "file"]), "==> file <==\nT\n\n==> file <==\nT");
+    equal(getHeadContent(reader, "c", 2, ["file", "file"]), "==> file <==\nTh\n\n==> file <==\nTh");
+  });
+  
+  it("should return given no of lines of all files seperated by file names if option is n", function(){
+    equal(getHeadContent(reader, "n", 1, ["file", "file"]), "==> file <==\nThis is first line.\n\n==> file <==\nThis is first line.");
+    equal(getHeadContent(reader, "n", 2, ["file", "file"]), "==> file <==\nThis is first line.\nThis is second line.\n\n==> file <==\nThis is first line.\nThis is second line.");
   });
 });
 

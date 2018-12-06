@@ -44,4 +44,4 @@ const getHeadContent = function(reader, option, count, files) {
     return heading + extractContent(file) } ).join("\n").slice(1);
 }
 
-module.exports = { extractOption, varifyInputs, getHeadContent };
+module.exports = { extractOption, varifyInputs, getHeadContent, getContent, getHeadContent };
