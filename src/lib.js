@@ -23,17 +23,22 @@ const varifyInputs = function(inputs) {
   return result;
 }
 
-const getContents = function(reader, option, count, files) {
+const getContent = function(reader, option, count, file) {
   let splitor = "\n";
   if(option == "c"){
     splitor = "";
   }
-  if(files.length == 1){
-    return reader(files[0], "utf8").split(splitor).slice(0,count).join(splitor);
+  return reader(file, "utf8").split(splitor).slice(0,count).join(splitor);
+}
+
+const getHeadContent = function(reader, option, count, files) {
+  let extractContent = getContent.bind(null, reader, option, count);
+   if(files.length == 1){
+     return extractContent(files[0]);
   }
   return files.map(function(file){
     let heading = "\n==> "+file+" <==\n";
-    return heading + reader(file, "utf8").split(splitor).slice(0,count).join(splitor) } ).join("\n").slice(1);
+    return heading + extractContent(file) } ).join("\n").slice(1);
 }
 
-module.exports = { varifyInputs, getContents };
+module.exports = { varifyInputs, getHeadContent };
