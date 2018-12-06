@@ -28,8 +28,12 @@ const getContents = function(reader, option, count, files) {
   if(option == "c"){
     splitor = "";
   }
-  let content = reader(files[0], "utf8").split(splitor);
-  return content.slice(0, count).join(splitor);
+  if(files.length == 1){
+    return reader(files[0], "utf8").split(splitor).slice(0,count).join(splitor);
+  }
+  return files.map(function(file){
+    let heading = "\n==> "+file+" <==\n";
+    return heading + reader(file, "utf8").split(splitor).slice(0,count).join(splitor) } ).join("\n").slice(1);
 }
 
 module.exports = { varifyInputs, getContents };
