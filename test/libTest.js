@@ -1,6 +1,6 @@
 const { equal, deepEqual } = require("assert");
 
-const { split, varifyInputs } = require("../src/lib.js");
+const { extractOption, varifyInputs } = require("../src/lib.js");
 
 describe("varifyInputs", function(){
   it("should return object containing n as defult option and 10 as defult count value", function(){
@@ -32,5 +32,19 @@ describe("varifyInputs", function(){
     deepEqual(varifyInputs(["-n", "5", "file1", "file2"]), { option : "n", count : "5", files : ["file1", "file2"] } );
     deepEqual(varifyInputs(["-c", "5", "file1", "file2"]), { option : "c", count : "5", files : ["file1", "file2"] } );
   });
-
 });
+
+describe("extractOption", function(){
+  it("should return c if input starts with -c", function(){
+    equal(extractOption("-c"), "c");
+    equal(extractOption("-c5"), "c");
+  });
+
+  it("should return n if input does not start with -c", function(){
+    equal(extractOption("-5"), "n");
+    equal(extractOption("-n"), "n");
+    equal(extractOption("-n5"), "n");
+    equal(extractOption("file"), "n");
+  });
+});
+

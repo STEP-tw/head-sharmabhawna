@@ -1,6 +1,6 @@
-const extractOption = function(choice) {
+const extractOption = function(input) {
   let option = "n";
-  if(choice.startsWith("-c")){
+  if(input.startsWith("-c")){
     option = "c";
   }
   return option;
@@ -41,4 +41,4 @@ const getHeadContent = function(reader, option, count, files) {
     return heading + extractContent(file) } ).join("\n").slice(1);
 }
 
-module.exports = { varifyInputs, getHeadContent };
+module.exports = { extractOption, varifyInputs, getHeadContent };
