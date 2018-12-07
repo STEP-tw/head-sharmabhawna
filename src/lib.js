@@ -46,6 +46,7 @@ const extractContent = function(fs, option, count, file) {
 };
 
 const head = function(fs, { option, count, files }) {
+  let { existsSync } = fs;
   if (count == 0 || isNaN(count)) {
     return option == "n" ? lineCountError + count : byteCountError + count;
   }
@@ -55,6 +56,9 @@ const head = function(fs, { option, count, files }) {
   }
   return files
     .map(function(file) {
+      if(! existsSync(file)){
+        return "\n"+extractData(file);
+      }
       let header = "\n==> " + file + " <==\n";
       return header + extractData(file);
     })
