@@ -2,10 +2,6 @@ let lineCountError = "head: illegal line count -- ";
 
 let byteCountError = "head: illegal byte count -- ";
 
-let optionError = "head: illegal option -- ";
-
-let usageLog = "usage: head[-n lines | -c bytes][file ...]"
-
 const extractOption = function(input) {
   let option = "n";
   if(input.startsWith("-c")){
