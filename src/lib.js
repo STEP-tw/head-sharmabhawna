@@ -20,13 +20,13 @@ const segregateInputs = function(inputs) {
 
   if(inputs[0].startsWith("-")){
     result.files = inputs.slice(1);
-    result.count = inputs[0].slice(1, inputs[0].length);
+    result.count = inputs[0].slice(1);
 
     if(inputs[0].length >= 3 && inputs[0].match("[a-z]")){
-      result.count = inputs[0].slice(2, inputs[0].length);
+      result.count = inputs[0].slice(2);
     }
 
-    if(! inputs[1].match("[a-z]"+"[0-9]") && ! inputs[1].match("[a-z]"+"[-,_]"+"[0-9]")){
+    if(! isNaN(inputs[1])){
       result.count = inputs[1];
       result.files = inputs.slice(2);
     }
