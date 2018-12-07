@@ -68,13 +68,13 @@ describe("extractContent", function(){
 
 describe("head", function(){
   it("should throw error that count is zero", function(){
-    equal(head(reader, { option : "c", count : 0, files : ["file"] }), "illegal byte count -- 0");
-    equal(head(reader, { option : "n", count : 0, files : ["file"] }), "illegal line count -- 0");
+    equal(head(reader, { option : "c", count : 0, files : ["file"] }), "head: illegal byte count -- 0");
+    equal(head(reader, { option : "n", count : 0, files : ["file"] }), "head: illegal line count -- 0");
   });
 
   it("should throw error that count is invalid or non-numeric", function(){
-    equal(head(reader, { option : "c", count : "1x", files : ["file"] }), "illegal byte count -- 1x");
-    equal(head(reader, { option : "n", count : "1x", files : ["file"] }), "illegal line count -- 1x");
+    equal(head(reader, { option : "c", count : "1x", files : ["file"] }), "head: illegal byte count -- 1x");
+    equal(head(reader, { option : "n", count : "1x", files : ["file"] }), "head: illegal line count -- 1x");
   });
 
   it("should return given no of bytes of one file if option is c", function(){
