@@ -48,53 +48,62 @@ describe("extractOption", function(){
   });
 });
 
-let file = "This is first line."+"\n"+"This is second line."+"\n"+"This is third line."
-
-const reader = function(x, unicode) {
-  return file;
+const areMatched = function(arg1, arg2) {
+  return arg1 === arg2;
 }
+
+const reader = function(expectedFileName, encoding, content) {
+  return function(actualFileName, encoding){
+    if(areMatched(expectedFileName, actualFileName)){
+      return content;
+    }
+  }
+}
+
+let file1Reader = reader("file1", "utf8", "a\nb\bc\nd\ne");
+let file2Reader = reader("file2", "utf8", "1\n2\n3\n4\n5");
 
 describe("extractContent", function(){
   it("should return given no of bytes of given file if option is c", function(){
-    equal(extractContent(reader, "c", "1", "file"), "T");
-    equal(extractContent(reader, "c", "2", "file"), "Th");
+    equal(extractContent(file1Reader, "c", "1", "file1"), "a");
+    equal(extractContent(file2Reader, "c", "2", "file2"), "1\n");
   });
 
   it("should return given no of lines of given file if option is n", function(){
-    equal(extractContent(reader, "n", "1", "file"), "This is first line.");
-    equal(extractContent(reader, "n", "2", "file"), "This is first line."+"\n"+"This is second line.");
+    equal(extractContent(file1Reader, "n", "1", "file1"), "a");
+    equal(extractContent(file2Reader, "n", "2", "file2"), "1\n2");
   });
 });
 
 describe("head", function(){
   it("should throw error that count is zero", function(){
-    equal(head(reader, { option : "c", count : 0, files : ["file"] }), "head: illegal byte count -- 0");
-    equal(head(reader, { option : "n", count : 0, files : ["file"] }), "head: illegal line count -- 0");
+    equal(head(file1Reader, { option : "c", count : 0, files : ["file1"] }), "head: illegal byte count -- 0");
+    equal(head(file2Reader, { option : "n", count : 0, files : ["file2"] }), "head: illegal line count -- 0");
   });
 
   it("should throw error that count is invalid or non-numeric", function(){
-    equal(head(reader, { option : "c", count : "1x", files : ["file"] }), "head: illegal byte count -- 1x");
-    equal(head(reader, { option : "n", count : "1x", files : ["file"] }), "head: illegal line count -- 1x");
+    equal(head(file1Reader, { option : "c", count : "1x", files : ["file1"] }), "head: illegal byte count -- 1x");
+    equal(head(file2Reader, { option : "n", count : "1x", files : ["file2"] }), "head: illegal line count -- 1x");
   });
 
   it("should return given no of bytes of one file if option is c", function(){
-    equal(head(reader, { option : "c", count : 1, files : ["file"] }), "T");
-    equal(head(reader, { option : "c", count : 2, files : ["file"] }), "Th");
+    equal(head(file1Reader, { option : "c", count : 1, files : ["file1"] }), "a");
+    equal(head(file2Reader, { option : "c", count : 2, files : ["file2"] }), "1\n");
   });
 
   it("should return given no of lines of one file if option is n", function(){
-    equal(head(reader, { option : "n", count : 1, files : ["file"] }), "This is first line.");
-    equal(head(reader, { option : "n", count : 2, files : ["file"] }), "This is first line.\nThis is second line.");
+    equal(head(file1Reader, { option : "n", count : 1, files : ["file1"] }), "a");
+    equal(head(file2Reader, { option : "n", count : 2, files : ["file2"] }), "1\n2");
   });
 
   it("should return given no of bytes of all files seperated by file names if option is c", function(){
-    equal(head(reader, { option : "c", count : 1, files : ["file", "file"] }), "==> file <==\nT\n\n==> file <==\nT");
-    equal(head(reader, { option : "c", count : 2, files : ["file", "file"] }), "==> file <==\nTh\n\n==> file <==\nTh");
+    equal(head(file1Reader, { option : "c", count : 1, files : ["file1", "file1"] }), "==> file1 <==\na\n\n==> file1 <==\na");
+    equal(head(file2Reader, { option : "c", count : 2, files : ["file2", "file2"] }), "==> file2 <==\n1\n\n\n==> file2 <==\n1\n");
   });
   
   it("should return given no of lines of all files seperated by file names if option is n", function(){
-    equal(head(reader, { option : "n", count : 1, files : ["file", "file"] }), "==> file <==\nThis is first line.\n\n==> file <==\nThis is first line.");
-    equal(head(reader, { option : "n", count : 2, files : ["file", "file"] }), "==> file <==\nThis is first line.\nThis is second line.\n\n==> file <==\nThis is first line.\nThis is second line.");
+    equal(head(file1Reader, { option : "n", count : 1, files : ["file1", "file1"] }), "==> file1 <==\na\n\n==> file1 <==\na");
+    equal(head(file2Reader, { option : "n", count : 2, files : ["file2", "file2"] }), "==> file2 <==\n1\n2\n\n==> file2 <==\n1\n2");
   });
 });
 
