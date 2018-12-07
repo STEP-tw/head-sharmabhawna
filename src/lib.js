@@ -35,10 +35,13 @@ const segregateInputs = function(inputs) {
 }
 
 const extractContent = function(fs, option, count, file) {
-  let { readFileSync } = fs;
+  let { readFileSync, existsSync } = fs;
   let splitor = "\n";
   if(option == "c"){
     splitor = "";
+  }
+  if( ! existsSync(file)){
+    return "head: "+file+": No such file or directory";
   }
   return readFileSync(file, "utf8").split(splitor).slice(0,count).join(splitor);
 }

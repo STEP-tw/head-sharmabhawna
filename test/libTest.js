@@ -60,7 +60,17 @@ const reader = function(expectedFileName, encoding, content) {
   }
 }
 
-const fs = { readFileSync : fileReader };
+const validator = function(expectedFileName, content) {
+  return function(actualFileName){
+    return areMatched(expectedFileName, actualFileName);
+  }
+}
+
+const fileReader = reader("numbers", "utf8", "1\n2\n3\n4\n5");
+
+const fileValidator = validator("numbers", "1\n2\n3\n4\n5");
+
+const fs = { readFileSync : fileReader, existsSync : fileValidator };
 
 describe("extractContent", function(){
   it("should return given no of bytes of given numbers if option is c", function(){
@@ -72,6 +82,12 @@ describe("extractContent", function(){
     equal(extractContent(fs, "n", "1", "numbers"), "1");
     equal(extractContent(fs, "n", "2", "numbers"), "1\n2");
   });
+
+  it("should throw error if file is not present", function(){
+    equal(extractContent(fs, "c", "1", "letters" ), "head: letters: No such file or directory");
+    equal(extractContent(fs, "n", "2", "letters" ), "head: letters: No such file or directory");
+  });
+
 });
 
 describe("head", function(){
@@ -95,14 +111,19 @@ describe("head", function(){
     equal(head(fs, { option : "n", count : 2, files : ["numbers"] }), "1\n2");
   });
 
-  it("should return given no of bytes of all numberss seperated by numbers names if option is c", function(){
+  it("should return given no of bytes of all numbers seperated by numbers names if option is c", function(){
     equal(head(fs, { option : "c", count : 1, files : ["numbers", "numbers"] }), "==> numbers <==\n1\n\n==> numbers <==\n1");
     equal(head(fs, { option : "c", count : 2, files : ["numbers", "numbers"] }), "==> numbers <==\n1\n\n\n==> numbers <==\n1\n");
   });
   
-  it("should return given no of lines of all numberss seperated by numbers names if option is n", function(){
+  it("should return given no of lines of all numbers seperated by numbers names if option is n", function(){
     equal(head(fs, { option : "n", count : 1, files : ["numbers", "numbers"] }), "==> numbers <==\n1\n\n==> numbers <==\n1");
     equal(head(fs, { option : "n", count : 2, files : ["numbers", "numbers"] }), "==> numbers <==\n1\n2\n\n==> numbers <==\n1\n2");
+  });
+
+  it("should throw error if file is not present", function(){
+    equal(head(fs, { option : "c", count : 1, files : ["letters"] }), "head: letters: No such file or directory");
+    equal(head(fs, { option : "n", count : 2, files : ["letters"] }), "head: letters: No such file or directory");
   });
 
 });
