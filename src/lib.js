@@ -34,19 +34,20 @@ const segregateInputs = function(inputs) {
   return result;
 }
 
-const extractContent = function(reader, option, count, file) {
+const extractContent = function(fs, option, count, file) {
+  let { readFileSync } = fs;
   let splitor = "\n";
   if(option == "c"){
     splitor = "";
   }
-  return reader(file, "utf8").split(splitor).slice(0,count).join(splitor);
+  return readFileSync(file, "utf8").split(splitor).slice(0,count).join(splitor);
 }
 
-const head = function(reader, { option, count, files }) {
+const head = function(fs, { option, count, files }) {
   if(count == 0 || isNaN(count)){
     return option == "n" ? lineCountError + count : byteCountError + count;
   }
-  let extractData = extractContent.bind(null, reader, option, count);
+  let extractData = extractContent.bind(null, fs, option, count);
    if(files.length == 1){
      return extractData(files[0]);
   }
