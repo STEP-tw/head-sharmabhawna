@@ -45,9 +45,13 @@ const extractContent = function(fs, option, count, file) {
     .join(seperator);
 };
 
+const isInvalidCount = function(count) {
+  return count == 0 || isNaN(count);
+}
+
 const head = function(fs, { option, count, files }) {
   let { existsSync } = fs;
-  if (count == 0 || isNaN(count)) {
+  if (isInvalidCount(count)) {
     return option == "n" ? lineCountError + count : byteCountError + count;
   }
   let extractData = extractContent.bind(null, fs, option, count);
