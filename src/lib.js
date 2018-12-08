@@ -3,11 +3,10 @@ let lineCountError = "head: illegal line count -- ";
 let byteCountError = "head: illegal byte count -- ";
 
 const extractOption = function(input) {
-  let option = "n";
   if (input.startsWith("-c")) {
-    option = "c";
+    return "c";
   }
-  return option;
+  return "n";
 };
 
 const segregateInputs = function(inputs) {
