@@ -17,13 +17,13 @@ const segregateInputs = function(inputs) {
     return result;
   }
   result.files = inputs.slice(1);
-  result.count = inputs[0].slice(1);
+  result.count = inputs[0].slice(2);
 
-  if (inputs[0].length >= 3 && inputs[0].match("[a-z]")) {
-    result.count = inputs[0].slice(2);
+  if (! isNaN(inputs[0][1])) {
+    result.count = inputs[0].slice(1);
   }
 
-  if (!isNaN(inputs[1])) {
+  if (! isNaN(inputs[1])) {
     result.count = inputs[1];
     result.files = inputs.slice(2);
   }
