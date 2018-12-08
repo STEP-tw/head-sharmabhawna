@@ -13,18 +13,19 @@ const segregateInputs = function(inputs) {
   let result = { option: "n", count: 10, files: inputs };
   result.option = extractOption(inputs[0]);
 
-  if (inputs[0].startsWith("-")) {
-    result.files = inputs.slice(1);
-    result.count = inputs[0].slice(1);
+  if (! inputs[0].startsWith("-")) {
+    return result;
+  }
+  result.files = inputs.slice(1);
+  result.count = inputs[0].slice(1);
 
-    if (inputs[0].length >= 3 && inputs[0].match("[a-z]")) {
-      result.count = inputs[0].slice(2);
-    }
+  if (inputs[0].length >= 3 && inputs[0].match("[a-z]")) {
+    result.count = inputs[0].slice(2);
+  }
 
-    if (!isNaN(inputs[1])) {
-      result.count = inputs[1];
-      result.files = inputs.slice(2);
-    }
+  if (!isNaN(inputs[1])) {
+    result.count = inputs[1];
+    result.files = inputs.slice(2);
   }
   return result;
 };
