@@ -4,34 +4,6 @@ let byteCountError = "head: illegal byte count -- ";
 
 let offsetError = "tail: illegal offset -- ";
 
-const extractOption = function(input) {
-  if (input.startsWith("-c")) {
-    return "c";
-  }
-  return "n";
-};
-
-const segregateInputs = function(inputs) {
-  let result = { option: "n", count: 10, files: inputs };
-  result.option = extractOption(inputs[0]);
-
-  if (! inputs[0].startsWith("-")) {
-    return result;
-  }
-  result.files = inputs.slice(1);
-  result.count = inputs[0].slice(2);
-
-  if (! isNaN(inputs[0][1])) {
-    result.count = inputs[0].slice(1);
-  }
-
-  if (! isNaN(inputs[1])) {
-    result.count = inputs[1];
-    result.files = inputs.slice(2);
-  }
-  return result;
-};
-
 const extractSeperator = function(option) {
   if(option == "c"){
     return "";
@@ -110,4 +82,4 @@ const tail = function(fs, { option, count, files }) {
 };
   
 
-module.exports = { extractOption, segregateInputs, extractContent, extractHeadContent , extractTailContent, head, tail};
+module.exports = { extractContent, extractHeadContent , extractTailContent, head, tail};

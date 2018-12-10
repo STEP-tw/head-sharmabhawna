@@ -1,7 +1,9 @@
 const { equal, deepEqual } = require("assert");
 
-const { extractOption, segregateInputs, extractContent, extractHeadContent, extractTailContent, head, tail } = require("../src/lib.js");
+const { extractContent, extractHeadContent, extractTailContent, head, tail } = require("../src/lib.js");
   
+const { extractOption, segregateInputs } = require("../src/parsingInputLib");
+
 describe("segregateInputs", function(){
   it("should return object containing n as defult option and 10 as defult count value", function(){
     deepEqual(segregateInputs(["file1"]), { option : "n", count : 10, files : ["file1"] } );
