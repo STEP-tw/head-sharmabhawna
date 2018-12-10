@@ -30,19 +30,37 @@ const segregateInputs = function(inputs) {
   return result;
 };
 
-const extractContent = function(fs, option, count, file) {
-  let { readFileSync, existsSync } = fs;
-  let seperator = "\n";
-  if (option == "c") {
-    seperator = "";
+const extractSeperator = function(option) {
+  if(option == "c"){
+    return "";
   }
+  return "\n";
+}
+
+const extractHeadContent = function(fs, option, count, file) {
+  let { existsSync } = fs;
+  let seperator = extractSeperator(option);
   if (!existsSync(file)) {
     return "head: " + file + ": No such file or directory";
   }
-  return readFileSync(file, "utf8")
-    .split(seperator)
-    .slice(0, count)
-    .join(seperator);
+  return extractContent(fs, file).split(seperator).slice(0, count).join(seperator);
+}
+
+const extractTailContent = function(fs, option, count, file) {
+  let { existsSync } = fs;
+  let seperator = extractSeperator(option);
+  if (!existsSync(file)) {
+    return "head: " + file + ": No such file or directory";
+  }
+  let content = extractContent(fs, file);
+  let contents = content.split(seperator);
+  let requiredCount = contents.length-count;
+  return contents.slice(requiredCount).join(seperator);
+}
+
+const extractContent = function(fs, file) {
+  let { readFileSync } = fs;
+  return readFileSync(file, "utf8");
 };
 
 const isInvalidCount = function(count) {
@@ -54,7 +72,7 @@ const head = function(fs, { option, count, files }) {
   if (isInvalidCount(count)) {
     return option == "n" ? lineCountError + count : byteCountError + count;
   }
-  let extractData = extractContent.bind(null, fs, option, count);
+  let extractData = extractHeadContent.bind(null, fs, option, count);
   if (files.length == 1) {
     return extractData(files[0]);
   }
@@ -70,4 +88,4 @@ const head = function(fs, { option, count, files }) {
     .slice(1);
 };
 
-module.exports = { extractOption, segregateInputs, head, extractContent };
+module.exports = { extractOption, segregateInputs, extractContent, extractHeadContent , extractTailContent, head };

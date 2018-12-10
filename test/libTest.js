@@ -1,7 +1,7 @@
 const { equal, deepEqual } = require("assert");
 
-const { extractOption, segregateInputs, extractContent, head } = require("../src/lib.js");
-
+const { extractOption, segregateInputs, extractContent, extractHeadContent, extractTailContent, head } = require("../src/lib.js");
+  
 describe("segregateInputs", function(){
   it("should return object containing n as defult option and 10 as defult count value", function(){
     deepEqual(segregateInputs(["file1"]), { option : "n", count : 10, files : ["file1"] } );
@@ -73,19 +73,43 @@ const fileValidator = validator("numbers", "1\n2\n3\n4\n5");
 const fs = { readFileSync : fileReader, existsSync : fileValidator };
 
 describe("extractContent", function(){
-  it("should return given no of bytes of given numbers if option is c", function(){
-    equal(extractContent(fs, "c", "1", "numbers"), "1");
-    equal(extractContent(fs, "c", "2", "numbers"), "1\n");
+  it("should return full content of file", function(){
+    equal(extractContent(fs, "numbers"), "1\n2\n3\n4\n5");
+  });
+});
+
+describe("extractHeadContent", function(){
+  it("should return given no of bytes of file from top if option is c", function(){
+    equal(extractHeadContent(fs, "c", "1", "numbers"), "1");
+    equal(extractHeadContent(fs, "c", "2", "numbers"), "1\n");
   });
 
-  it("should return given no of lines of given numbers if option is n", function(){
-    equal(extractContent(fs, "n", "1", "numbers"), "1");
-    equal(extractContent(fs, "n", "2", "numbers"), "1\n2");
+  it("should return given no of lines of file from top if option is n", function(){
+    equal(extractHeadContent(fs, "n", "1", "numbers"), "1");
+    equal(extractHeadContent(fs, "n", "2", "numbers"), "1\n2");
   });
 
   it("should throw error if file is not present", function(){
-    equal(extractContent(fs, "c", "1", "letters" ), "head: letters: No such file or directory");
-    equal(extractContent(fs, "n", "2", "letters" ), "head: letters: No such file or directory");
+    equal(extractHeadContent(fs, "c", "1", "letters" ), "head: letters: No such file or directory");
+    equal(extractHeadContent(fs, "n", "2", "letters" ), "head: letters: No such file or directory");
+  });
+
+});
+
+describe("extractTailContent", function(){
+  it("should return given no of bytes of file from bottom if option is c", function(){
+    equal(extractTailContent(fs, "c", "1", "numbers"), "5");
+    equal(extractTailContent(fs, "c", "2", "numbers"), "\n5");
+  });
+
+  it("should return given no of lines of file from bottom if option is n", function(){
+    equal(extractTailContent(fs, "n", "1", "numbers"), "5");
+    equal(extractTailContent(fs, "n", "2", "numbers"), "4\n5");
+  });
+
+  it("should throw error if file is not present", function(){
+    equal(extractTailContent(fs, "c", "1", "letters" ), "head: letters: No such file or directory");
+    equal(extractTailContent(fs, "n", "2", "letters" ), "head: letters: No such file or directory");
   });
 
 });
