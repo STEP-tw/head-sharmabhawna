@@ -1,4 +1,4 @@
-const extractSeperator = function(option) {
+const selectSeperator = function(option) {
   if(option == "c"){
     return "";
   }
@@ -6,12 +6,12 @@ const extractSeperator = function(option) {
 }
 
 const extractHeadContent = function(fs, option, count, fileName) {
-  let seperator = extractSeperator(option);
+  let seperator = selectSeperator(option);
   return extractContent(fs, fileName).split(seperator).slice(0, count).join(seperator);
 }
 
 const extractTailContent = function(fs, option, count, fileName) {
-  let seperator = extractSeperator(option);
+  let seperator = selectSeperator(option);
   let content = extractContent(fs, fileName);
   let contents = content.split(seperator);
   let lengthOfFile = contents.length;
