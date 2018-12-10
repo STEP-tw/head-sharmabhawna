@@ -56,13 +56,33 @@ const extractTailContent = function(fs, option, count, fileName) {
   return contents.slice(requiredCount).join(seperator);
 }
 
-const extractContent = function(fs, file) {
+const extractContent = function(fs, fileName) {
   let { readFileSync, existsSync } = fs;
-  return readFileSync(file, "utf8");
+  return readFileSync(fileName, "utf8");
 };
 
 const isInvalidCount = function(count) {
   return count == 0 || isNaN(count);
+}
+
+const extractSingleFileData = function(context, validatorfn, dataExtractorFn, file){
+  if(! validatorfn(file)){
+    return context+": "+file+": No such file or directory";
+  }
+  return dataExtractorFn(file);
+}
+
+const extractMultipleFilesData = function(context, validatorfn, dataExtractorFn, files){
+  return files
+    .map(function(file) {
+      if(! validatorfn(file)){
+        return "\n"+context+": "+file+": No such file or directory";
+      }
+      let header = "\n==> " + file + " <==\n";
+      return header + dataExtractorFn(file);
+    })
+    .join("\n")
+    .slice(1);
 }
 
 const head = function(fs, { option, count, files }) {
@@ -72,21 +92,9 @@ const head = function(fs, { option, count, files }) {
   }
   let extractData = extractHeadContent.bind(null, fs, option, count);
   if (files.length == 1) {
-    if(! existsSync(files[0])){
-      return "head: "+files[0]+": No such file or directory";
-    }
-     return extractData(files[0]);
+    return extractSingleFileData("head", existsSync, extractData, files[0]);
   }
-  return files
-    .map(function(file) {
-      if(! existsSync(file)){
-        return "\nhead : "+file+": No such file or directory";
-      }
-      let header = "\n==> " + file + " <==\n";
-      return header + extractData(file);
-    })
-    .join("\n")
-    .slice(1);
+  return extractMultipleFilesData("head", existsSync, extractData, files);
 };
 
 const tail = function(fs, { option, count, files }) {
@@ -96,21 +104,10 @@ const tail = function(fs, { option, count, files }) {
   }
   let extractData = extractTailContent.bind(null, fs, option, count);
   if (files.length == 1) {
-    if(! existsSync(files[0])){
-      return "tail: "+files[0]+": No such file or directory";
-    }
-    return extractData(files[0]);
+    return extractSingleFileData("tail", existsSync, extractData, files[0]);
   }
-  return files
-    .map(function(file) {
-      if(! existsSync(file)){
-        return "\ntail : "+file+": No such file or directory";
-      }
-      let header = "\n==> " + file + " <==\n";
-      return header + extractData(file);
-    })
-    .join("\n")
-    .slice(1);
+  return extractMultipleFilesData("tail", existsSync, extractData, files);
 };
+  
 
 module.exports = { extractOption, segregateInputs, extractContent, extractHeadContent , extractTailContent, head, tail};
