@@ -1,6 +1,6 @@
 const { equal, deepEqual } = require("assert");
 
-const { extractOption, segregateInputs, extractHeadContent, head } = require("../src/lib.js");
+const { extractOption, segregateInputs, extractContent, head } = require("../src/lib.js");
 
 describe("segregateInputs", function(){
   it("should return object containing n as defult option and 10 as defult count value", function(){
@@ -72,20 +72,20 @@ const fileValidator = validator("numbers", "1\n2\n3\n4\n5");
 
 const fs = { readFileSync : fileReader, existsSync : fileValidator };
 
-describe("extractHeadContent", function(){
+describe("extractContent", function(){
   it("should return given no of bytes of given numbers if option is c", function(){
-    equal(extractHeadContent(fs, "c", "1", "numbers"), "1");
-    equal(extractHeadContent(fs, "c", "2", "numbers"), "1\n");
+    equal(extractContent(fs, "c", "1", "numbers"), "1");
+    equal(extractContent(fs, "c", "2", "numbers"), "1\n");
   });
 
   it("should return given no of lines of given numbers if option is n", function(){
-    equal(extractHeadContent(fs, "n", "1", "numbers"), "1");
-    equal(extractHeadContent(fs, "n", "2", "numbers"), "1\n2");
+    equal(extractContent(fs, "n", "1", "numbers"), "1");
+    equal(extractContent(fs, "n", "2", "numbers"), "1\n2");
   });
 
   it("should throw error if file is not present", function(){
-    equal(extractHeadContent(fs, "c", "1", "letters" ), "head: letters: No such file or directory");
-    equal(extractHeadContent(fs, "n", "2", "letters" ), "head: letters: No such file or directory");
+    equal(extractContent(fs, "c", "1", "letters" ), "head: letters: No such file or directory");
+    equal(extractContent(fs, "n", "2", "letters" ), "head: letters: No such file or directory");
   });
 
 });

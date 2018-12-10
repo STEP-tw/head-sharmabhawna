@@ -30,7 +30,7 @@ const segregateInputs = function(inputs) {
   return result;
 };
 
-const extractHeadContent = function(fs, option, count, file) {
+const extractContent = function(fs, option, count, file) {
   let { readFileSync, existsSync } = fs;
   let seperator = "\n";
   if (option == "c") {
@@ -54,7 +54,7 @@ const head = function(fs, { option, count, files }) {
   if (isInvalidCount(count)) {
     return option == "n" ? lineCountError + count : byteCountError + count;
   }
-  let extractData = extractHeadContent.bind(null, fs, option, count);
+  let extractData = extractContent.bind(null, fs, option, count);
   if (files.length == 1) {
     return extractData(files[0]);
   }
@@ -70,4 +70,4 @@ const head = function(fs, { option, count, files }) {
     .slice(1);
 };
 
-module.exports = { extractOption, segregateInputs, head, extractHeadContent };
+module.exports = { extractOption, segregateInputs, head, extractContent };
