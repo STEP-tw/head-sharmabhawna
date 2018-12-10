@@ -56,10 +56,10 @@ const extractTailContent = function(fs, option, count, file) {
   }
   let content = extractContent(fs, file);
   let contents = content.split(seperator);
-  let totalLength = contents.length;
-  let requiredCount = totalLength-count;
-  if(count >= totalLength){
-    requiredCount = totalLength;
+  let lengthOfFile = contents.length;
+  let requiredCount = lengthOfFile-count;
+  if(count > lengthOfFile){
+    requiredCount = 0;
   }
   return contents.slice(requiredCount).join(seperator);
 }
