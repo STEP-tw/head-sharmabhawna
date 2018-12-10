@@ -1,9 +1,3 @@
-let lineCountError = "head: illegal line count -- ";
-
-let byteCountError = "head: illegal byte count -- ";
-
-let offsetError = "tail: illegal offset -- ";
-
 const extractSeperator = function(option) {
   if(option == "c"){
     return "";
@@ -58,6 +52,10 @@ const extractMultipleFilesData = function(context, validatorfn, dataExtractorFn,
 }
 
 const head = function(fs, { option, count, files }) {
+  let lineCountError = "head: illegal line count -- ";
+
+  let byteCountError = "head: illegal byte count -- ";
+
   let { existsSync } = fs;
   if (isInvalidCount(count)) {
     return option == "n" ? lineCountError + count : byteCountError + count;
@@ -70,6 +68,8 @@ const head = function(fs, { option, count, files }) {
 };
 
 const tail = function(fs, { option, count, files }) {
+  let offsetError = "tail: illegal offset -- ";
+
   let { existsSync } = fs;
   if (isNaN(count)) {
     return offsetError + count;
@@ -80,6 +80,5 @@ const tail = function(fs, { option, count, files }) {
   }
   return extractMultipleFilesData("tail", existsSync, extractData, files);
 };
-  
 
 module.exports = { extractContent, extractHeadContent , extractTailContent, head, tail};
