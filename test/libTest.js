@@ -154,8 +154,8 @@ describe("head", function(){
 
 describe("tail", function(){
   it("should throw error that count is invalid or non-numeric", function(){
-    equal(tail(fs, { option : "c", count : "1x", files : ["numbers"] }), "tail: illegal byte count -- 1x");
-    equal(tail(fs, { option : "n", count : "1x", files : ["numbers"] }), "tail: illegal line count -- 1x");
+    equal(tail(fs, { option : "c", count : "1x", files : ["numbers"] }), "tail: illegal offset -- 1x");
+    equal(tail(fs, { option : "n", count : "1x", files : ["numbers"] }), "tail: illegal offset -- 1x");
   });
 
   it("should return given no of bytes of file from bottom if option is c", function(){

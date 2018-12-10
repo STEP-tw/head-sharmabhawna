@@ -1,10 +1,9 @@
-const throwLineCountError = function(commandType){
-  return commandType+": illegal line count -- ";
-}
+let lineCountError = "head: illegal line count -- ";
 
-const throwByteCountError = function(commandType){
-  return commandType+": illegal byte count -- ";
-}
+let byteCountError = "head: illegal byte count -- ";
+
+let offsetError = "tail: illegal offset -- ";
+
 const extractOption = function(input) {
   if (input.startsWith("-c")) {
     return "c";
@@ -73,7 +72,7 @@ const isInvalidCount = function(count) {
 const head = function(fs, { option, count, files }) {
   let { existsSync } = fs;
   if (isInvalidCount(count)) {
-    return option == "n" ? throwLineCountError("head") + count : throwByteCountError("head") + count;
+    return option == "n" ? lineCountError + count : byteCountError + count;
   }
   let extractData = extractHeadContent.bind(null, fs, option, count);
   if (files.length == 1) {
@@ -94,7 +93,7 @@ const head = function(fs, { option, count, files }) {
 const tail = function(fs, { option, count, files }) {
   let { existsSync } = fs;
   if (isNaN(count)) {
-    return option == "n" ? throwLineCountError("tail") + count : throwByteCountError("tail") + count;
+    return offsetError + count;
   }
   let extractData = extractTailContent.bind(null, fs, option, count);
   if (files.length == 1) {
