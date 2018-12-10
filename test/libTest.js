@@ -89,11 +89,6 @@ describe("extractHeadContent", function(){
     equal(extractHeadContent(fs, "n", "2", "numbers"), "1\n2");
   });
 
-  it("should throw error if file is not present", function(){
-    equal(extractHeadContent(fs, "c", "1", "letters" ), "head: letters: No such file or directory");
-    equal(extractHeadContent(fs, "n", "2", "letters" ), "head: letters: No such file or directory");
-  });
-
 });
 
 describe("extractTailContent", function(){
@@ -105,11 +100,6 @@ describe("extractTailContent", function(){
   it("should return given no of lines of file from bottom if option is n", function(){
     equal(extractTailContent(fs, "n", "1", "numbers"), "5");
     equal(extractTailContent(fs, "n", "2", "numbers"), "4\n5");
-  });
-
-  it("should throw error if file is not present", function(){
-    equal(extractTailContent(fs, "c", "1", "letters" ), "tail: letters: No such file or directory");
-    equal(extractTailContent(fs, "n", "2", "letters" ), "tail: letters: No such file or directory");
   });
 
 });

@@ -39,22 +39,14 @@ const extractSeperator = function(option) {
   return "\n";
 }
 
-const extractHeadContent = function(fs, option, count, file) {
-  let { existsSync } = fs;
+const extractHeadContent = function(fs, option, count, fileName) {
   let seperator = extractSeperator(option);
-  if (!existsSync(file)) {
-    return "head: " + file + ": No such file or directory";
-  }
-  return extractContent(fs, file).split(seperator).slice(0, count).join(seperator);
+  return extractContent(fs, fileName).split(seperator).slice(0, count).join(seperator);
 }
 
-const extractTailContent = function(fs, option, count, file) {
-  let { existsSync } = fs;
+const extractTailContent = function(fs, option, count, fileName) {
   let seperator = extractSeperator(option);
-  if (!existsSync(file)) {
-    return "tail: " + file + ": No such file or directory";
-  }
-  let content = extractContent(fs, file);
+  let content = extractContent(fs, fileName);
   let contents = content.split(seperator);
   let lengthOfFile = contents.length;
   let requiredCount = lengthOfFile-count;
@@ -65,7 +57,7 @@ const extractTailContent = function(fs, option, count, file) {
 }
 
 const extractContent = function(fs, file) {
-  let { readFileSync } = fs;
+  let { readFileSync, existsSync } = fs;
   return readFileSync(file, "utf8");
 };
 
@@ -80,12 +72,15 @@ const head = function(fs, { option, count, files }) {
   }
   let extractData = extractHeadContent.bind(null, fs, option, count);
   if (files.length == 1) {
-    return extractData(files[0]);
+    if(! existsSync(files[0])){
+      return "head: "+files[0]+": No such file or directory";
+    }
+     return extractData(files[0]);
   }
   return files
     .map(function(file) {
       if(! existsSync(file)){
-        return "\n"+extractData(file);
+        return "\nhead : "+file+": No such file or directory";
       }
       let header = "\n==> " + file + " <==\n";
       return header + extractData(file);
@@ -101,12 +96,15 @@ const tail = function(fs, { option, count, files }) {
   }
   let extractData = extractTailContent.bind(null, fs, option, count);
   if (files.length == 1) {
+    if(! existsSync(files[0])){
+      return "tail: "+files[0]+": No such file or directory";
+    }
     return extractData(files[0]);
   }
   return files
     .map(function(file) {
       if(! existsSync(file)){
-        return "\n"+extractData(file);
+        return "\ntail : "+file+": No such file or directory";
       }
       let header = "\n==> " + file + " <==\n";
       return header + extractData(file);
@@ -114,6 +112,5 @@ const tail = function(fs, { option, count, files }) {
     .join("\n")
     .slice(1);
 };
-
 
 module.exports = { extractOption, segregateInputs, extractContent, extractHeadContent , extractTailContent, head, tail};
