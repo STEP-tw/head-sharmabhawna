@@ -45,21 +45,6 @@ const extractHeadContent = function(fs, option, count, file) {
     .join(seperator);
 };
 
-const extractTailContent = function(fs, option, count, file) {
-  let { readFileSync, existsSync } = fs;
-  let seperator = "\n";
-  if (option == "c") {
-    seperator = "";
-  }
-  if (!existsSync(file)) {
-    return "head: " + file + ": No such file or directory";
-  }
-  let content = readFileSync(file, "utf8");
-  let length = content.split(seperator).length;
-
-  return content.split(seperator).slice(length-count).join(seperator);
-};
-
 const isInvalidCount = function(count) {
   return count == 0 || isNaN(count);
 }
@@ -85,4 +70,4 @@ const head = function(fs, { option, count, files }) {
     .slice(1);
 };
 
-module.exports = { extractOption, segregateInputs, extractHeadContent, head, extractTailContent };
+module.exports = { extractOption, segregateInputs, head, extractHeadContent };

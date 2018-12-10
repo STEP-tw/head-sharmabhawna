@@ -1,6 +1,6 @@
 const { equal, deepEqual } = require("assert");
 
-const { extractOption, segregateInputs, extractHeadContent, head, extractTailContent } = require("../src/lib.js");
+const { extractOption, segregateInputs, extractHeadContent, head } = require("../src/lib.js");
 
 describe("segregateInputs", function(){
   it("should return object containing n as defult option and 10 as defult count value", function(){
@@ -124,24 +124,6 @@ describe("head", function(){
   it("should throw error if file is not present", function(){
     equal(head(fs, { option : "c", count : 1, files : ["letters"] }), "head: letters: No such file or directory");
     equal(head(fs, { option : "n", count : 2, files : ["letters"] }), "head: letters: No such file or directory");
-  });
-
-});
-
-describe("extractTailContent", function(){
-  it("should return given no of bytes of given numbers if option is c", function(){
-    equal(extractTailContent(fs, "c", "1", "numbers"), "5");
-    equal(extractTailContent(fs, "c", "2", "numbers"), "\n5");
-  });
-
-  it("should return given no of lines of given numbers if option is n", function(){
-    equal(extractTailContent(fs, "n", "1", "numbers"), "5");
-    equal(extractTailContent(fs, "n", "2", "numbers"), "4\n5");
-  });
-
-  it("should throw error if file is not present", function(){
-    equal(extractTailContent(fs, "c", "1", "letters" ), "head: letters: No such file or directory");
-    equal(extractTailContent(fs, "n", "2", "letters" ), "head: letters: No such file or directory");
   });
 
 });
