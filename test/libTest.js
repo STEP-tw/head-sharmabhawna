@@ -1,6 +1,6 @@
 const { equal, deepEqual } = require("assert");
 
-const { extractOption, segregateInputs, extractContent, extractHeadContent, extractTailContent, head } = require("../src/lib.js");
+const { extractOption, segregateInputs, extractContent, extractHeadContent, extractTailContent, head, tail } = require("../src/lib.js");
   
 describe("segregateInputs", function(){
   it("should return object containing n as defult option and 10 as defult count value", function(){
@@ -108,8 +108,8 @@ describe("extractTailContent", function(){
   });
 
   it("should throw error if file is not present", function(){
-    equal(extractTailContent(fs, "c", "1", "letters" ), "head: letters: No such file or directory");
-    equal(extractTailContent(fs, "n", "2", "letters" ), "head: letters: No such file or directory");
+    equal(extractTailContent(fs, "c", "1", "letters" ), "tail: letters: No such file or directory");
+    equal(extractTailContent(fs, "n", "2", "letters" ), "tail: letters: No such file or directory");
   });
 
 });
@@ -125,22 +125,22 @@ describe("head", function(){
     equal(head(fs, { option : "n", count : "1x", files : ["numbers"] }), "head: illegal line count -- 1x");
   });
 
-  it("should return given no of bytes of one numbers if option is c", function(){
+  it("should return given no of bytes of file from top if option is c", function(){
     equal(head(fs, { option : "c", count : 1, files : ["numbers"] }), "1");
     equal(head(fs, { option : "c", count : 2, files : ["numbers"] }), "1\n");
   });
 
-  it("should return given no of lines of one numbers if option is n", function(){
+  it("should return given no of lines of file from top if option is n", function(){
     equal(head(fs, { option : "n", count : 1, files : ["numbers"] }), "1");
     equal(head(fs, { option : "n", count : 2, files : ["numbers"] }), "1\n2");
   });
 
-  it("should return given no of bytes of all numbers seperated by numbers names if option is c", function(){
+  it("should return given no of bytes of all files from top seperated by file names if option is c", function(){
     equal(head(fs, { option : "c", count : 1, files : ["numbers", "numbers"] }), "==> numbers <==\n1\n\n==> numbers <==\n1");
     equal(head(fs, { option : "c", count : 2, files : ["numbers", "numbers"] }), "==> numbers <==\n1\n\n\n==> numbers <==\n1\n");
   });
   
-  it("should return given no of lines of all numbers seperated by numbers names if option is n", function(){
+  it("should return given no of lines of all files from top seperated by file names if option is n", function(){
     equal(head(fs, { option : "n", count : 1, files : ["numbers", "numbers"] }), "==> numbers <==\n1\n\n==> numbers <==\n1");
     equal(head(fs, { option : "n", count : 2, files : ["numbers", "numbers"] }), "==> numbers <==\n1\n2\n\n==> numbers <==\n1\n2");
   });
@@ -148,6 +148,39 @@ describe("head", function(){
   it("should throw error if file is not present", function(){
     equal(head(fs, { option : "c", count : 1, files : ["letters"] }), "head: letters: No such file or directory");
     equal(head(fs, { option : "n", count : 2, files : ["letters"] }), "head: letters: No such file or directory");
+  });
+
+});
+
+describe("tail", function(){
+  it("should throw error that count is invalid or non-numeric", function(){
+    equal(tail(fs, { option : "c", count : "1x", files : ["numbers"] }), "tail: illegal byte count -- 1x");
+    equal(tail(fs, { option : "n", count : "1x", files : ["numbers"] }), "tail: illegal line count -- 1x");
+  });
+
+  it("should return given no of bytes of file from bottom if option is c", function(){
+    equal(tail(fs, { option : "c", count : 1, files : ["numbers"] }), "5");
+    equal(tail(fs, { option : "c", count : 2, files : ["numbers"] }), "\n5");
+  });
+
+  it("should return given no of lines of file from bottom if option is n", function(){
+    equal(tail(fs, { option : "n", count : 1, files : ["numbers"] }), "5");
+    equal(tail(fs, { option : "n", count : 2, files : ["numbers"] }), "4\n5");
+  });
+
+  it("should return given no of bytes of all files from bottom seperated by file names if option is c", function(){
+    equal(tail(fs, { option : "c", count : 1, files : ["numbers", "numbers"] }), "==> numbers <==\n5\n\n==> numbers <==\n5");
+    equal(tail(fs, { option : "c", count : 2, files : ["numbers", "numbers"] }), "==> numbers <==\n\n5\n\n==> numbers <==\n\n5");
+  });
+  
+  it("should return given no of lines of all files from bottom seperated by files names if option is n", function(){
+    equal(tail(fs, { option : "n", count : 1, files : ["numbers", "numbers"] }), "==> numbers <==\n5\n\n==> numbers <==\n5");
+    equal(tail(fs, { option : "n", count : 2, files : ["numbers", "numbers"] }), "==> numbers <==\n4\n5\n\n==> numbers <==\n4\n5");
+  });
+
+  it("should throw error if file is not present", function(){
+    equal(tail(fs, { option : "c", count : 1, files : ["letters"] }), "tail: letters: No such file or directory");
+    equal(tail(fs, { option : "n", count : 2, files : ["letters"] }), "tail: letters: No such file or directory");
   });
 
 });

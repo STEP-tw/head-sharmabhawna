@@ -1,7 +1,10 @@
-let lineCountError = "head: illegal line count -- ";
+const throwLineCountError = function(commandType){
+  return commandType+": illegal line count -- ";
+}
 
-let byteCountError = "head: illegal byte count -- ";
-
+const throwByteCountError = function(commandType){
+  return commandType+": illegal byte count -- ";
+}
 const extractOption = function(input) {
   if (input.startsWith("-c")) {
     return "c";
@@ -50,7 +53,7 @@ const extractTailContent = function(fs, option, count, file) {
   let { existsSync } = fs;
   let seperator = extractSeperator(option);
   if (!existsSync(file)) {
-    return "head: " + file + ": No such file or directory";
+    return "tail: " + file + ": No such file or directory";
   }
   let content = extractContent(fs, file);
   let contents = content.split(seperator);
@@ -70,7 +73,7 @@ const isInvalidCount = function(count) {
 const head = function(fs, { option, count, files }) {
   let { existsSync } = fs;
   if (isInvalidCount(count)) {
-    return option == "n" ? lineCountError + count : byteCountError + count;
+    return option == "n" ? throwLineCountError("head") + count : throwByteCountError("head") + count;
   }
   let extractData = extractHeadContent.bind(null, fs, option, count);
   if (files.length == 1) {
@@ -88,4 +91,26 @@ const head = function(fs, { option, count, files }) {
     .slice(1);
 };
 
-module.exports = { extractOption, segregateInputs, extractContent, extractHeadContent , extractTailContent, head };
+const tail = function(fs, { option, count, files }) {
+  let { existsSync } = fs;
+  if (isNaN(count)) {
+    return option == "n" ? throwLineCountError("tail") + count : throwByteCountError("tail") + count;
+  }
+  let extractData = extractTailContent.bind(null, fs, option, count);
+  if (files.length == 1) {
+    return extractData(files[0]);
+  }
+  return files
+    .map(function(file) {
+      if(! existsSync(file)){
+        return "\n"+extractData(file);
+      }
+      let header = "\n==> " + file + " <==\n";
+      return header + extractData(file);
+    })
+    .join("\n")
+    .slice(1);
+};
+
+
+module.exports = { extractOption, segregateInputs, extractContent, extractHeadContent , extractTailContent, head, tail};
