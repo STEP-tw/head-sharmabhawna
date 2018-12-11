@@ -26,19 +26,19 @@ const extractContent = function(fs, fileName) {
 
 const isInvalidCount = function(count) {
   return count == 0 || isNaN(count);
-}
+};
 
-const extractSingleFileData = function(context, validatorfn, dataExtractorFn, file){
-  if(! validatorfn(file)){
+const extractSingleFileData = function(context, existanceCheckerFn, dataExtractorFn, file){
+  if(! existanceCheckerFn(file)){
     return context+": "+file+": No such file or directory";
   }
   return dataExtractorFn(file);
-}
+};
 
-const extractMultipleFilesData = function(context, validatorfn, dataExtractorFn, files){
+const extractMultipleFilesData = function(context, existanceCheckerFn, dataExtractorFn, files){
   return files
     .map(function(file) {
-      if(! validatorfn(file)){
+      if(! existanceCheckerFn(file)){
         return "\n"+context+": "+file+": No such file or directory";
       }
       let header = "\n==> " + file + " <==\n";
