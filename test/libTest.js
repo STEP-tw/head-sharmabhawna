@@ -14,7 +14,7 @@ const mockedReader = function(expectedFileName, encoding, content) {
   }
 }
 
-const mockedExistanceChecker = function(expectedFileName, content) {
+const mockedExistanceChecker = function(expectedFileName) {
   return function(actualFileName){
     return areMatched(expectedFileName, actualFileName);
   }
