@@ -1,23 +1,23 @@
-const selectSeperator = function(option) {
+const selectDelimiter = function(option) {
  return option == "c" ? "" : "\n";
 };
 
 const extractHeadContent = function(fs, option, count, fileName) {
-  let seperator = selectSeperator(option);
-  return extractContent(fs, fileName).split(seperator).slice(0, count).join(seperator);
+  let delimiter = selectDelimiter(option);
+  return extractContent(fs, fileName).split(delimiter).slice(0, count).join(delimiter);
 };
 
 const extractTailContent = function(fs, option, count, fileName) {
-  let seperator = selectSeperator(option);
+  let delimiter = selectDelimiter(option);
   let content = extractContent(fs, fileName);
-  let contents = content.split(seperator);
+  let contents = content.split(delimiter);
   let lengthOfFile = contents.length;
   let requiredCount = lengthOfFile-count;
   if(count > lengthOfFile){
     requiredCount = 0;
   }
-  return contents.slice(requiredCount).join(seperator);
-}
+  return contents.slice(requiredCount).join(delimiter);
+};
 
 const extractContent = function(fs, fileName) {
   let { readFileSync, existsSync } = fs;
