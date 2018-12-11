@@ -15,7 +15,7 @@ describe("segregateInputs", function(){
       deepEqual(segregateInputs(["-12", "file1", "file2"]), { option : "n", count : "12", files : ["file1", "file2"] } );
     });
   
-    it("should return object with given option and count", function(){
+    it("should return object with given option and count when they are given jointly", function(){
       deepEqual(segregateInputs(["-n5", "file1"]), { option : "n", count : "5", files : ["file1"] } );
       deepEqual(segregateInputs(["-n12", "file1"]), { option : "n", count : "12", files : ["file1"] } );
       deepEqual(segregateInputs(["-c5", "file1"]), { option : "c", count : "5", files : ["file1"] } );
@@ -24,7 +24,7 @@ describe("segregateInputs", function(){
       deepEqual(segregateInputs(["-c5", "file1", "file2"]), { option : "c", count : "5", files : ["file1", "file2"] } );
     });
   
-    it("should return object with given option and count", function(){
+    it("should return object with given option and count when they are given seperately", function(){
       deepEqual(segregateInputs(["-n", "5", "file1"]), { option : "n", count : "5", files : ["file1"] } );
       deepEqual(segregateInputs(["-n", "12", "file1"]), { option : "n", count : "12", files : ["file1"] } );
       deepEqual(segregateInputs(["-c", "5", "file1"]), { option : "c", count : "5", files : ["file1"] } );
