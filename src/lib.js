@@ -1,14 +1,11 @@
 const selectSeperator = function(option) {
-  if(option == "c"){
-    return "";
-  }
-  return "\n";
-}
+ return option == "c" ? "" : "\n";
+};
 
 const extractHeadContent = function(fs, option, count, fileName) {
   let seperator = selectSeperator(option);
   return extractContent(fs, fileName).split(seperator).slice(0, count).join(seperator);
-}
+};
 
 const extractTailContent = function(fs, option, count, fileName) {
   let seperator = selectSeperator(option);
