@@ -2,21 +2,29 @@ const selectDelimiter = function(option) {
  return option == "c" ? "" : "\n";
 };
 
-const extractHeadContent = function(fs, option, count, fileName) {
+const split = function(data, option){
   let delimiter = selectDelimiter(option);
-  return extractContent(fs, fileName).split(delimiter).slice(0, count).join(delimiter);
+  return data.split(delimiter);
+}
+
+const join = function(data, option){
+  let delimiter = selectDelimiter(option);
+  return data.join(delimiter);
+}
+
+const extractHeadContent = function(fs, option, count, fileName) {
+  let contents = split(extractContent(fs, fileName), option).slice(0, count);
+  return join(contents, option);
 };
 
 const extractTailContent = function(fs, option, count, fileName) {
-  let delimiter = selectDelimiter(option);
-  let content = extractContent(fs, fileName);
-  let contents = content.split(delimiter);
+  let contents = split(extractContent(fs, fileName), option);
   let lengthOfFile = contents.length;
   let requiredCount = lengthOfFile-count;
   if(count > lengthOfFile){
     requiredCount = 0;
   }
-  return contents.slice(requiredCount).join(delimiter);
+  return join(contents.slice(requiredCount), option);
 };
 
 const extractContent = function(fs, fileName) {
