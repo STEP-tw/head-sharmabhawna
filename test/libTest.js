@@ -33,12 +33,12 @@ describe("extractContent", function(){
 });
 
 describe("extractHeadContent", function(){
-  it("should return given no of bytes of file from top if option is c", function(){
+  it("should return given count of bytes of file from top if option is c", function(){
     equal(extractHeadContent(mockedFS, "c", "1", "symbols"), "*");
     equal(extractHeadContent(mockedFS, "c", "2", "symbols"), "*\n");
   });
 
-  it("should return given no of lines of file from top if option is n", function(){
+  it("should return given count of lines of file from top if option is n", function(){
     equal(extractHeadContent(mockedFS, "n", "1", "symbols"), "*");
     equal(extractHeadContent(mockedFS, "n", "2", "symbols"), "*\n@");
   });
@@ -46,12 +46,12 @@ describe("extractHeadContent", function(){
 });
 
 describe("extractTailContent", function(){
-  it("should return given no of bytes of file from bottom if option is c", function(){
+  it("should return given count of bytes of file from bottom if option is c", function(){
     equal(extractTailContent(mockedFS, "c", "1", "symbols"), "#");
     equal(extractTailContent(mockedFS, "c", "2", "symbols"), "\n#");
   });
 
-  it("should return given no of lines of file from bottom if option is n", function(){
+  it("should return given count of lines of file from bottom if option is n", function(){
     equal(extractTailContent(mockedFS, "n", "1", "symbols"), "#");
     equal(extractTailContent(mockedFS, "n", "2", "symbols"), "$\n#");
   });
@@ -69,22 +69,22 @@ describe("head", function(){
     equal(head(mockedFS, { option : "n", count : "1x", files : ["symbols"] }), "head: illegal line count -- 1x");
   });
 
-  it("should return given no of bytes of file from top if option is c", function(){
+  it("should return given count of bytes of file from top if option is c", function(){
     equal(head(mockedFS, { option : "c", count : 1, files : ["symbols"] }), "*");
     equal(head(mockedFS, { option : "c", count : 2, files : ["symbols"] }), "*\n");
   });
 
-  it("should return given no of lines of file from top if option is n", function(){
+  it("should return given count of lines of file from top if option is n", function(){
     equal(head(mockedFS, { option : "n", count : 1, files : ["symbols"] }), "*");
     equal(head(mockedFS, { option : "n", count : 2, files : ["symbols"] }), "*\n@");
   });
 
-  it("should return given no of bytes of all files from top seperated by file names if option is c", function(){
+  it("should return given count of bytes of all files from top seperated by file names if option is c", function(){
     equal(head(mockedFS, { option : "c", count : 1, files : ["symbols", "symbols"] }), "==> symbols <==\n*\n\n==> symbols <==\n*");
     equal(head(mockedFS, { option : "c", count : 2, files : ["symbols", "symbols"] }), "==> symbols <==\n*\n\n\n==> symbols <==\n*\n");
   });
   
-  it("should return given no of lines of all files from top seperated by file names if option is n", function(){
+  it("should return given count of lines of all files from top seperated by file names if option is n", function(){
     equal(head(mockedFS, { option : "n", count : 1, files : ["symbols", "symbols"] }), "==> symbols <==\n*\n\n==> symbols <==\n*");
     equal(head(mockedFS, { option : "n", count : 2, files : ["symbols", "symbols"] }), "==> symbols <==\n*\n@\n\n==> symbols <==\n*\n@");
   });
@@ -102,22 +102,22 @@ describe("tail", function(){
     equal(tail(mockedFS, { option : "n", count : "1x", files : ["symbols"] }), "tail: illegal offset -- 1x");
   });
 
-  it("should return given no of bytes of file from bottom if option is c", function(){
+  it("should return given count of bytes of file from bottom if option is c", function(){
     equal(tail(mockedFS, { option : "c", count : 1, files : ["symbols"] }), "#");
     equal(tail(mockedFS, { option : "c", count : 2, files : ["symbols"] }), "\n#");
   });
 
-  it("should return given no of lines of file from bottom if option is n", function(){
+  it("should return given count of lines of file from bottom if option is n", function(){
     equal(tail(mockedFS, { option : "n", count : 1, files : ["symbols"] }), "#");
     equal(tail(mockedFS, { option : "n", count : 2, files : ["symbols"] }), "$\n#");
   });
 
-  it("should return given no of bytes of all files from bottom seperated by file names if option is c", function(){
+  it("should return given count of bytes of all files from bottom seperated by file names if option is c", function(){
     equal(tail(mockedFS, { option : "c", count : 1, files : ["symbols", "symbols"] }), "==> symbols <==\n#\n\n==> symbols <==\n#");
     equal(tail(mockedFS, { option : "c", count : 2, files : ["symbols", "symbols"] }), "==> symbols <==\n\n#\n\n==> symbols <==\n\n#");
   });
   
-  it("should return given no of lines of all files from bottom seperated by files names if option is n", function(){
+  it("should return given count of lines of all files from bottom seperated by files names if option is n", function(){
     equal(tail(mockedFS, { option : "n", count : 1, files : ["symbols", "symbols"] }), "==> symbols <==\n#\n\n==> symbols <==\n#");
     equal(tail(mockedFS, { option : "n", count : 2, files : ["symbols", "symbols"] }), "==> symbols <==\n$\n#\n\n==> symbols <==\n$\n#");
   });
