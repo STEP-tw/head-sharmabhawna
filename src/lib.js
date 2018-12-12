@@ -36,18 +36,18 @@ const isInvalidCount = function(count) {
   return count == 0 || isNaN(count);
 };
 
-const extractSingleFileData = function(context, existanceCheckerFn, dataExtractorFn, file){
+const extractSingleFileData = function(callingContext, existanceCheckerFn, dataExtractorFn, file){
   if(! existanceCheckerFn(file)){
-    return context+": "+file+": No such file or directory";
+    return callingContext+": "+file+": No such file or directory";
   }
   return dataExtractorFn(file);
 };
 
-const extractMultipleFilesData = function(context, existanceCheckerFn, dataExtractorFn, files){
+const extractMultipleFilesData = function(callingContext, existanceCheckerFn, dataExtractorFn, files){
   return files
     .map(function(file) {
       if(! existanceCheckerFn(file)){
-        return "\n"+context+": "+file+": No such file or directory";
+        return "\n"+callingContext+": "+file+": No such file or directory";
       }
       let header = "\n==> " + file + " <==\n";
       return header + dataExtractorFn(file);
@@ -56,11 +56,11 @@ const extractMultipleFilesData = function(context, existanceCheckerFn, dataExtra
     .slice(1);
 };
 
-const getContent = function(context, existanceCheckerFn, dataExtractorFn, files){
+const getContent = function(callingContext, existanceCheckerFn, dataExtractorFn, files){
   if (files.length == 1) {
-    return extractSingleFileData(context, existanceCheckerFn, dataExtractorFn, files[0]);
+    return extractSingleFileData(callingContext, existanceCheckerFn, dataExtractorFn, files[0]);
   }
-  return extractMultipleFilesData(context, existanceCheckerFn, dataExtractorFn, files);
+  return extractMultipleFilesData(callingContext, existanceCheckerFn, dataExtractorFn, files);
 }
 
 const head = function(fs, { option, count, files }) {
