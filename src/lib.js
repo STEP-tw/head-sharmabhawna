@@ -54,6 +54,13 @@ const extractMultipleFilesData = function(context, existanceCheckerFn, dataExtra
     })
     .join("\n")
     .slice(1);
+};
+
+const extractRequiredContent = function(context, existanceCheckerFn, dataExtractorFn, files){
+  if (files.length == 1) {
+    return extractSingleFileData(context, existanceCheckerFn, dataExtractorFn, files[0]);
+  }
+  return extractMultipleFilesData(context, existanceCheckerFn, dataExtractorFn, files);
 }
 
 const head = function(fs, { option, count, files }) {
@@ -65,11 +72,8 @@ const head = function(fs, { option, count, files }) {
   if (isInvalidCount(count)) {
     return option == "n" ? lineCountError + count : byteCountError + count;
   }
-  let extractData = extractHeadContent.bind(null, fs, option, count);
-  if (files.length == 1) {
-    return extractSingleFileData("head", existsSync, extractData, files[0]);
-  }
-  return extractMultipleFilesData("head", existsSync, extractData, files);
+   let extractData = extractHeadContent.bind(null, fs, option, count);
+   return extractRequiredContent("head", existsSync, extractData, files);
 };
 
 const tail = function(fs, { option, count, files }) {
@@ -80,10 +84,7 @@ const tail = function(fs, { option, count, files }) {
     return offsetError + count;
   }
   let extractData = extractTailContent.bind(null, fs, option, count);
-  if (files.length == 1) {
-    return extractSingleFileData("tail", existsSync, extractData, files[0]);
-  }
-  return extractMultipleFilesData("tail", existsSync, extractData, files);
+  return extractRequiredContent("tail", existsSync, extractData, files);
 };
 
-module.exports = { extractContent, extractHeadContent , extractTailContent, head, tail};
+module.exports = { extractContent, extractHeadContent , extractTailContent, head, tail };
