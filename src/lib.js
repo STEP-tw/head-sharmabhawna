@@ -44,7 +44,7 @@ const extractSingleFileData = function(callingContext, existanceCheckerFn, dataE
 };
 
 const addHeader = function(fileName) {
-return "==> "+fileName+" <==\n";
+return "\n==> "+fileName+" <==\n";
 };
 
 const extractMultipleFilesData = function(callingContext, existanceCheckerFn, dataExtractorFn, files){
@@ -52,9 +52,9 @@ const extractMultipleFilesData = function(callingContext, existanceCheckerFn, da
     .map(function(file) {
       let data = extractSingleFileData(callingContext, existanceCheckerFn, dataExtractorFn, file);
       if(data.match(/: No such file or directory/)){
-        return "\n"+data;
+        return "\n" + data;
       }
-      return "\n"+addHeader(file) + data;
+      return addHeader(file) + data;
     }).join("\n").slice(1);
 };
 
