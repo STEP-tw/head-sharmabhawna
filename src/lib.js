@@ -74,8 +74,8 @@ const head = function(fs, { option, count, files }) {
   if (isInvalidCount(count)) {
     return option == "n" ? lineCountError + count : byteCountError + count; 
   }
-   let extractData = extractHeadContent.bind(null, fs, option, count);
-   return getContent("head", existsSync, extractData, files);
+   let dataExtractor = extractHeadContent.bind(null, fs, option, count);
+   return getContent("head", existsSync, dataExtractor, files);
 };
 
 const tail = function(fs, { option, count, files }) {
@@ -85,8 +85,8 @@ const tail = function(fs, { option, count, files }) {
   if (isNaN(count)) {
     return offsetError + count;
   }
-  let extractData = extractTailContent.bind(null, fs, option, count);
-  return getContent("tail", existsSync, extractData, files);
+  let dataExtractor = extractTailContent.bind(null, fs, option, count);
+  return getContent("tail", existsSync, dataExtractor, files);
 };
 
 module.exports = { extractContent, extractHeadContent , extractTailContent, head, tail };
