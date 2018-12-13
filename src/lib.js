@@ -36,21 +36,21 @@ const isInvalidCount = function(count) {
   return count == 0 || isNaN(count);
 };
 
-const extractSingleFileData = function(callingContext, existanceCheckerFn, dataExtractorFn, file){
+const extractSingleFileContent = function(callingContext, existanceCheckerFn, contentExtractorFn, file){
   if(! existanceCheckerFn(file)){
     return callingContext+": "+file+": No such file or directory";
   }
-  return dataExtractorFn(file);
+  return contentExtractorFn(file);
 };
 
 const addHeader = function(fileName) {
 return "\n==> "+fileName+" <==\n";
 };
 
-const extractMultipleFilesData = function(callingContext, existanceCheckerFn, dataExtractorFn, files){
+const extractMultipleFilesContent = function(callingContext, existanceCheckerFn, contentExtractorFn, files){
   return files
     .map(function(file) {
-      let data = extractSingleFileData(callingContext, existanceCheckerFn, dataExtractorFn, file);
+      let data = extractSingleFileContent(callingContext, existanceCheckerFn, contentExtractorFn, file);
       if(data.match(/: No such file or directory/)){
         return "\n" + data;
       }
@@ -58,11 +58,11 @@ const extractMultipleFilesData = function(callingContext, existanceCheckerFn, da
     }).join("\n").slice(1);
 };
 
-const getContent = function(callingContext, existanceCheckerFn, dataExtractorFn, files){
+const getContent = function(callingContext, existanceCheckerFn, contentExtractorFn, files){
   if (files.length == 1) {
-    return extractSingleFileData(callingContext, existanceCheckerFn, dataExtractorFn, files[0]);
+    return extractSingleFileContent(callingContext, existanceCheckerFn, contentExtractorFn, files[0]);
   }
-  return extractMultipleFilesData(callingContext, existanceCheckerFn, dataExtractorFn, files);
+  return extractMultipleFilesContent(callingContext, existanceCheckerFn, contentExtractorFn, files);
 }
 
 const head = function(fs, { option, count, files }) {
@@ -74,8 +74,8 @@ const head = function(fs, { option, count, files }) {
   if (isInvalidCount(count)) {
     return option == "n" ? lineCountError + count : byteCountError + count; 
   }
-   let dataExtractor = extractHeadContent.bind(null, fs, option, count);
-   return getContent("head", existsSync, dataExtractor, files);
+   let contentExtractor = extractHeadContent.bind(null, fs, option, count);
+   return getContent("head", existsSync, contentExtractor, files);
 };
 
 const tail = function(fs, { option, count, files }) {
@@ -85,8 +85,8 @@ const tail = function(fs, { option, count, files }) {
   if (isNaN(count)) {
     return offsetError + count;
   }
-  let dataExtractor = extractTailContent.bind(null, fs, option, count);
-  return getContent("tail", existsSync, dataExtractor, files);
+  let contentExtractor = extractTailContent.bind(null, fs, option, count);
+  return getContent("tail", existsSync, contentExtractor, files);
 };
 
 module.exports = { extractContent, extractHeadContent , extractTailContent, head, tail };
