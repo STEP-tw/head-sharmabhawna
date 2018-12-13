@@ -94,6 +94,15 @@ describe("head", function(){
     equal(head(mockedFS, { option : "n", count : 2, files : ["letters"] }), "head: letters: No such file or directory");
   });
 
+  it("should throw error for files those are not present and return given count of bytes of existing files from top", function(){
+    equal(head(mockedFS, { option : "c", count : 1, files : ["letters", "symbols"] }), "head: letters: No such file or directory\n\n==> symbols <==\n*");
+    equal(head(mockedFS, { option : "c", count : 1, files : ["symbols", "letters"] }), "==> symbols <==\n*\n\nhead: letters: No such file or directory");
+  });
+
+  it("should throw error for files those are not present and return given count of lines of existing files from top", function(){
+    equal(head(mockedFS, { option : "n", count : 1, files : ["letters", "symbols"] }), "head: letters: No such file or directory\n\n==> symbols <==\n*");
+    equal(head(mockedFS, { option : "n", count : 1, files : ["symbols", "letters"] }), "==> symbols <==\n*\n\nhead: letters: No such file or directory");
+  });
 });
 
 describe("tail", function(){
@@ -125,6 +134,16 @@ describe("tail", function(){
   it("should throw error if file is not present", function(){
     equal(tail(mockedFS, { option : "c", count : 1, files : ["letters"] }), "tail: letters: No such file or directory");
     equal(tail(mockedFS, { option : "n", count : 2, files : ["letters"] }), "tail: letters: No such file or directory");
+  });
+
+  it("should throw error for files those are not present and return given count of bytes of existing files from bottom", function(){
+    equal(tail(mockedFS, { option : "c", count : 1, files : ["letters", "symbols"] }), "tail: letters: No such file or directory\n\n==> symbols <==\n#");
+    equal(tail(mockedFS, { option : "c", count : 1, files : ["symbols", "letters"] }), "==> symbols <==\n#\n\ntail: letters: No such file or directory");
+  });
+
+  it("should throw error for files those are not present and return given count of lines of existing files from bottom", function(){
+    equal(tail(mockedFS, { option : "n", count : 1, files : ["letters", "symbols"] }), "tail: letters: No such file or directory\n\n==> symbols <==\n#");
+    equal(tail(mockedFS, { option : "n", count : 1, files : ["symbols", "letters"] }), "==> symbols <==\n#\n\ntail: letters: No such file or directory");
   });
 
 });
