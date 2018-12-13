@@ -2,29 +2,27 @@ const selectDelimiter = function(option) {
  return option == "c" ? "" : "\n";
 };
 
-const split = function(data, option){
+const extractRequiredContent = function(callingContext, fs, option, count, fileName) {
   let delimiter = selectDelimiter(option);
-  return data.split(delimiter);
-}
-
-const join = function(data, option){
-  let delimiter = selectDelimiter(option);
-  return data.join(delimiter);
-}
-
-const extractHeadContent = function(fs, option, count, fileName) {
-  let contents = split(extractContent(fs, fileName), option).slice(0, count);
-  return join(contents, option);
+  let splittedContent = extractContent(fs, fileName).split(delimiter);
+  let slicedContent = extractTailContent(splittedContent, count);
+  if(callingContext == "head"){
+    slicedContent = extractHeadContent(splittedContent, count);
+  }
+  return slicedContent.join(delimiter);
 };
 
-const extractTailContent = function(fs, option, count, fileName) {
-  let contents = split(extractContent(fs, fileName), option);
+const extractHeadContent = function(contents, count) {
+  return contents.slice(0, count);
+};
+
+const extractTailContent = function(contents, count) {
   let lengthOfFile = contents.length;
   let requiredCount = lengthOfFile-count;
   if(count > lengthOfFile){
     requiredCount = 0;
   }
-  return join(contents.slice(requiredCount), option);
+  return contents.slice(requiredCount);
 };
 
 const extractContent = function(fs, fileName) {
@@ -74,7 +72,7 @@ const head = function(fs, { option, count, files }) {
   if (isInvalidCount(count)) {
     return option == "n" ? lineCountError + count : byteCountError + count; 
   }
-   let contentExtractor = extractHeadContent.bind(null, fs, option, count);
+   let contentExtractor = extractRequiredContent.bind(null, "head", fs, option, count);
    return getContent("head", existsSync, contentExtractor, files);
 };
 
@@ -85,7 +83,7 @@ const tail = function(fs, { option, count, files }) {
   if (isNaN(count)) {
     return offsetError + count;
   }
-  let contentExtractor = extractTailContent.bind(null, fs, option, count);
+  let contentExtractor = extractRequiredContent.bind(null, "tail", fs, option, count);
   return getContent("tail", existsSync, contentExtractor, files);
 };
 

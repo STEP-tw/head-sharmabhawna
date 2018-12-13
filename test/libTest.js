@@ -33,27 +33,17 @@ describe("extractContent", function(){
 });
 
 describe("extractHeadContent", function(){
-  it("should return given count of bytes of file from top if option is c", function(){
-    equal(extractHeadContent(mockedFS, "c", "1", "symbols"), "*");
-    equal(extractHeadContent(mockedFS, "c", "2", "symbols"), "*\n");
-  });
-
-  it("should return given count of lines of file from top if option is n", function(){
-    equal(extractHeadContent(mockedFS, "n", "1", "symbols"), "*");
-    equal(extractHeadContent(mockedFS, "n", "2", "symbols"), "*\n@");
+  it("should return given count of elements from start of an array", function(){
+    deepEqual(extractHeadContent(["*", "@", "%", "$", "#"], 1), ["*"]);
+    deepEqual(extractHeadContent(["*", "@", "%", "$", "#"], 2), ["*", "@"]);
   });
 
 });
 
 describe("extractTailContent", function(){
-  it("should return given count of bytes of file from bottom if option is c", function(){
-    equal(extractTailContent(mockedFS, "c", "1", "symbols"), "#");
-    equal(extractTailContent(mockedFS, "c", "2", "symbols"), "\n#");
-  });
-
-  it("should return given count of lines of file from bottom if option is n", function(){
-    equal(extractTailContent(mockedFS, "n", "1", "symbols"), "#");
-    equal(extractTailContent(mockedFS, "n", "2", "symbols"), "$\n#");
+  it("should return given count of elements from end of an array", function(){
+    deepEqual(extractTailContent(["*", "@", "%", "$", "#"], 1), ["#"]);
+    deepEqual(extractTailContent(["*", "@", "%", "$", "#"], 2), ["$", "#"]);
   });
 
 });
