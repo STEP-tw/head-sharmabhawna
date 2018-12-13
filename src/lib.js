@@ -42,7 +42,7 @@ const extractSingleFileContent = function(callingContext, existanceCheckerFn, co
 };
 
 const addHeader = function(fileName) {
-return "\n==> "+fileName+" <==\n";
+  return "\n==> " + fileName + " <==\n";
 };
 
 const extractMultipleFilesContent = function(callingContext, existanceCheckerFn, contentExtractorFn, files){
@@ -56,7 +56,7 @@ const extractMultipleFilesContent = function(callingContext, existanceCheckerFn,
     }).join("\n").slice(1);
 };
 
-const getContent = function(callingContext, existanceCheckerFn, contentExtractorFn, files){
+const applyRequiredFunc = function(callingContext, existanceCheckerFn, contentExtractorFn, files){
   if (files.length == 1) {
     return extractSingleFileContent(callingContext, existanceCheckerFn, contentExtractorFn, files[0]);
   }
@@ -73,7 +73,7 @@ const head = function(fs, { option, count, files }) {
     return option == "n" ? lineCountError + count : byteCountError + count; 
   }
    let contentExtractor = extractRequiredContent.bind(null, "head", fs, option, count);
-   return getContent("head", existsSync, contentExtractor, files);
+   return applyRequiredFunc("head", existsSync, contentExtractor, files);
 };
 
 const tail = function(fs, { option, count, files }) {
@@ -84,7 +84,7 @@ const tail = function(fs, { option, count, files }) {
     return offsetError + count;
   }
   let contentExtractor = extractRequiredContent.bind(null, "tail", fs, option, count);
-  return getContent("tail", existsSync, contentExtractor, files);
+  return applyRequiredFunc("tail", existsSync, contentExtractor, files);
 };
 
 module.exports = { extractContent, extractHeadContent , extractTailContent, head, tail };
