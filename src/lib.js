@@ -26,7 +26,7 @@ const extractTailContent = function(contents, count) {
 };
 
 const extractContent = function(fs, fileName) {
-  let { readFileSync, existsSync } = fs;
+  let { readFileSync } = fs;
   return readFileSync(fileName, "utf8");
 };
 
