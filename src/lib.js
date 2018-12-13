@@ -17,7 +17,12 @@ const extractHeadContent = function(contents, count) {
 };
 
 const extractTailContent = function(contents, count) {
-  return contents.slice(-count);
+  let lengthOfFile = contents.length;
+  let requiredCount = lengthOfFile-count;
+  if(count > lengthOfFile){
+    requiredCount = 0;
+  }
+  return contents.slice(requiredCount);
 };
 
 const extractContent = function(fs, fileName) {
