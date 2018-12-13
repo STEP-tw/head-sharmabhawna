@@ -43,17 +43,19 @@ const extractSingleFileData = function(callingContext, existanceCheckerFn, dataE
   return dataExtractorFn(file);
 };
 
+const addHeader = function(fileName) {
+return "==> "+fileName+" <==\n";
+};
+
 const extractMultipleFilesData = function(callingContext, existanceCheckerFn, dataExtractorFn, files){
   return files
     .map(function(file) {
-      if(! existanceCheckerFn(file)){
-        return "\n"+callingContext+": "+file+": No such file or directory";
+      let data = extractSingleFileData(callingContext, existanceCheckerFn, dataExtractorFn, file);
+      if(data.match(/: No such file or directory/)){
+        return "\n"+data;
       }
-      let header = "\n==> " + file + " <==\n";
-      return header + dataExtractorFn(file);
-    })
-    .join("\n")
-    .slice(1);
+      return "\n"+addHeader(file) + data;
+    }).join("\n").slice(1);
 };
 
 const getContent = function(callingContext, existanceCheckerFn, dataExtractorFn, files){
@@ -70,7 +72,7 @@ const head = function(fs, { option, count, files }) {
 
   let { existsSync } = fs;
   if (isInvalidCount(count)) {
-    return option == "n" ? lineCountError + count : byteCountError + count;
+    return option == "n" ? lineCountError + count : byteCountError + count; 
   }
    let extractData = extractHeadContent.bind(null, fs, option, count);
    return getContent("head", existsSync, extractData, files);
