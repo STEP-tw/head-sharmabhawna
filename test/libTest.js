@@ -1,6 +1,6 @@
 const { equal, deepEqual } = require("assert");
 
-const { extractContent, extractHeadContent, extractTailContent, head, tail } = require("../src/lib.js");
+const { extractRequiredContent, extractContent, extractHeadContent, extractTailContent, head, tail } = require("../src/lib.js");
 
 const areMatched = function(arg1, arg2) {
   return arg1 === arg2;
@@ -44,6 +44,29 @@ describe("extractTailContent", function(){
   it("should return given count of elements from end of an array", function(){
     deepEqual(extractTailContent(["*", "@", "%", "$", "#"], 1), ["#"]);
     deepEqual(extractTailContent(["*", "@", "%", "$", "#"], 2), ["$", "#"]);
+  });
+
+});
+
+describe("extractRequiredContent", function(){
+  it("should return count of lines from top if calling context is head and and option is n", function(){
+    equal(extractRequiredContent("head", mockedFS, "n", 1, "symbols"), "*")
+    equal(extractRequiredContent("head", mockedFS, "n", 2, "symbols"), "*\n@")
+  });
+
+  it("should return count of bytes from top if calling context is head and and option is c", function(){
+    equal(extractRequiredContent("head", mockedFS, "c", 1, "symbols"), "*")
+    equal(extractRequiredContent("head", mockedFS, "c", 2, "symbols"), "*\n")
+  });
+
+  it("should return count of lines from bottom if calling context is tail and and option is n", function(){
+    equal(extractRequiredContent("tail", mockedFS, "n", 1, "symbols"), "#")
+    equal(extractRequiredContent("tail", mockedFS, "n", 2, "symbols"), "$\n#")
+  });
+
+  it("should return count of bytes from bottom if calling context is tail and and option is c", function(){
+    equal(extractRequiredContent("tail", mockedFS, "c", 1, "symbols"), "#")
+    equal(extractRequiredContent("tail", mockedFS, "c", 2, "symbols"), "\n#")
   });
 
 });
