@@ -119,6 +119,11 @@ describe("head", function(){
 });
 
 describe("tail", function(){
+  it("should return empty string if count is zero", function(){
+    equal(tail(mockedFS, { option : "c", count : "0", files : ["symbols"] }), "");
+    equal(tail(mockedFS, { option : "n", count : "0", files : ["symbols"] }), "");
+  });
+
   it("should throw error that count is invalid or non-numeric", function(){
     equal(tail(mockedFS, { option : "c", count : "1x", files : ["symbols"] }), "tail: illegal offset -- 1x");
     equal(tail(mockedFS, { option : "n", count : "1x", files : ["symbols"] }), "tail: illegal offset -- 1x");
