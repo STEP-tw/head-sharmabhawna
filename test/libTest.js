@@ -1,6 +1,6 @@
 const { equal, deepEqual } = require("assert");
 
-const { selectDelimiter, extractRequiredContent, extractContent, extractHeadContent, extractTailContent, head, tail } = require("../src/lib.js");
+const { selectDelimiter, generateHeader, extractRequiredContent, extractContent, extractHeadContent, extractTailContent, head, tail } = require("../src/lib.js");
 
 describe("selectDelimiter", function(){
   it("should return new line character if n is given as option", function(){
@@ -9,6 +9,13 @@ describe("selectDelimiter", function(){
 
   it("should return empty string if n is given as option", function(){
     equal(selectDelimiter("c"), "");
+  });
+});
+
+describe("generateHeader", function(){
+  it("should return header of given file name", function(){
+    equal(generateHeader("symbols"), "\n==> symbols <==\n")
+    equal(generateHeader("letters"), "\n==> letters <==\n")
   });
 });
 

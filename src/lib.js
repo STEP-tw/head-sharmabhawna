@@ -41,7 +41,7 @@ const extractSingleFileContent = function(callingContext, existanceCheckerFn, co
   return contentExtractorFn(file);
 };
 
-const addHeader = function(fileName) {
+const generateHeader = function(fileName){
   return "\n==> " + fileName + " <==\n";
 };
 
@@ -52,7 +52,7 @@ const extractMultipleFilesContent = function(callingContext, existanceCheckerFn,
       if(data.match(/: No such file or directory/)){
         return "\n" + data;
       }
-      return addHeader(file) + data;
+      return generateHeader(file) + data;
     }).join("\n").slice(1);
 };
 
@@ -80,11 +80,11 @@ const tail = function(fs, { option, count, files }) {
   let offsetError = "tail: illegal offset -- ";
 
   let { existsSync } = fs;
-  if (isNaN(count)) {
+  if(isNaN(count)) {
     return offsetError + count;
   }
   let contentExtractor = extractRequiredContent.bind(null, "tail", fs, option, count);
   return applyRequiredFunc("tail", existsSync, contentExtractor, files);
 };
 
-module.exports = { selectDelimiter, extractRequiredContent, extractContent, extractHeadContent, extractTailContent, head, tail };
+module.exports = { selectDelimiter, generateHeader, extractRequiredContent, extractContent, extractHeadContent, extractTailContent, head, tail };
