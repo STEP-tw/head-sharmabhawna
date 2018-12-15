@@ -1,6 +1,16 @@
 const { equal, deepEqual } = require("assert");
 
-const { extractRequiredContent, extractContent, extractHeadContent, extractTailContent, head, tail } = require("../src/lib.js");
+const { selectDelimiter, extractRequiredContent, extractContent, extractHeadContent, extractTailContent, head, tail } = require("../src/lib.js");
+
+describe("selectDelimiter", function(){
+  it("should return new line character if n is given as option", function(){
+    equal(selectDelimiter("n"), "\n");
+  });
+
+  it("should return empty string if n is given as option", function(){
+    equal(selectDelimiter("c"), "");
+  });
+});
 
 const areMatched = function(arg1, arg2) {
   return arg1 === arg2;

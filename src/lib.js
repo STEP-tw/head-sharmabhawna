@@ -87,4 +87,4 @@ const tail = function(fs, { option, count, files }) {
   return applyRequiredFunc("tail", existsSync, contentExtractor, files);
 };
 
-module.exports = { extractRequiredContent, extractContent, extractHeadContent, extractTailContent, head, tail };
+module.exports = { selectDelimiter, extractRequiredContent, extractContent, extractHeadContent, extractTailContent, head, tail };
