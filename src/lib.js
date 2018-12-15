@@ -36,7 +36,7 @@ const extractContent = function(fs, fileName) {
   return readFileSync(fileName, "utf8");
 };
 
-const isInvalidCount = function(count) {
+const isInvalid = function(count) {
   return count == 0 || isNaN(count);
 };
 
@@ -107,7 +107,7 @@ const head = function(fs, { option, count, files }) {
   let byteCountError = "head: illegal byte count -- ";
 
   let { existsSync } = fs;
-  if (isInvalidCount(count)) {
+  if (isInvalid(count)) {
     return option == "n" ? lineCountError + count : byteCountError + count;
   }
   let contentExtractor = extractRequiredContent.bind(
@@ -140,6 +140,7 @@ const tail = function(fs, { option, count, files }) {
 module.exports = {
   selectDelimiter,
   generateHeader,
+  isInvalid,
   extractRequiredContent,
   extractContent,
   extractHeadContent,

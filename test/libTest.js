@@ -3,6 +3,7 @@ const { equal, deepEqual } = require("assert");
 const {
   selectDelimiter,
   generateHeader,
+  isInvalid,
   extractRequiredContent,
   extractContent,
   extractHeadContent,
@@ -25,6 +26,22 @@ describe("generateHeader", function() {
   it("should return header of given file name", function() {
     equal(generateHeader("symbols"), "\n==> symbols <==\n");
     equal(generateHeader("letters"), "\n==> letters <==\n");
+  });
+});
+
+describe("isInvalid", function(){
+  it("should return true when count is 0", function(){
+    equal(isInvalid(0), true);
+  });
+
+  it("should return true when count is non a number", function(){
+    equal(isInvalid("0x"), true);
+    equal(isInvalid("10x"), true);
+  });
+
+  it("should return false when count is number", function(){
+    equal(isInvalid(1), false);
+    equal(isInvalid(10), false);
   });
 });
 
