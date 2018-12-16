@@ -146,6 +146,7 @@ module.exports = {
   extractHeadContent,
   extractTailContent,
   extractSingleFileContent,
+  extractMultipleFilesContent,
   head,
   tail
 };
