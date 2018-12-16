@@ -49,31 +49,25 @@ const areMatched = function(arg1, arg2) {
   return arg1 === arg2;
 };
 
-const areFilesAndEnocodingSame = function(expectedFileName, actualFileName, expectedEnocoding, actualEnocoding) {
-  return areMatched(expectedFileName, actualFileName) && areMatched(expectedEnocoding, actualEnocoding);
-};
-
-const mockedReader = function(expectedFileName, expectedEnocoding, content) {
+const mockedReader = function(expectedFiles, expectedEnocoding) {
   return function(actualFileName, actualEnocoding) {
-    if (areFilesAndEnocodingSame(expectedFileName, actualFileName, expectedEnocoding, actualEnocoding)) {
-      return content;
+    if (areMatched(expectedEnocoding, actualEnocoding)) {
+      return expectedFiles[actualFileName];
     }
   };
 };
 
-const mockedExistanceChecker = function(expectedFileName) {
+let files = { "vowels" : "a\ne\ni\no\nu", "symbols" : "*\n@\n%\n$\n#" };
+
+const mockedExistanceChecker = function(expectedFiles) {
   return function(actualFileName) {
-    return areMatched(expectedFileName, actualFileName);
+    return expectedFiles[actualFileName] != undefined;
   };
 };
 
-const symbolsReader = mockedReader("symbols", "utf8", "*\n@\n%\n$\n#");
-
-const symblosExistanceChecker = mockedExistanceChecker("symbols");
-
 const mockedFS = {
-  readFileSync: symbolsReader,
-  existsSync: symblosExistanceChecker
+  readFileSync: mockedReader(files, "utf8"),
+  existsSync: mockedExistanceChecker(files)
 };
 
 describe("extractContent", function() {
@@ -156,23 +150,23 @@ describe("head", function() {
 
   it("should return given count of bytes of all files from top seperated by file names if option is c", function() {
     equal(
-      head(mockedFS, { option: "c", count: 1, files: ["symbols", "symbols"] }),
-      "==> symbols <==\n*\n\n==> symbols <==\n*"
+      head(mockedFS, { option: "c", count: 1, files: ["symbols", "vowels"] }),
+      "==> symbols <==\n*\n\n==> vowels <==\na"
     );
     equal(
-      head(mockedFS, { option: "c", count: 2, files: ["symbols", "symbols"] }),
-      "==> symbols <==\n*\n\n\n==> symbols <==\n*\n"
+      head(mockedFS, { option: "c", count: 2, files: ["vowels", "symbols"] }),
+      "==> vowels <==\na\n\n\n==> symbols <==\n*\n"
     );
   });
 
   it("should return given count of lines of all files from top seperated by file names if option is n", function() {
     equal(
-      head(mockedFS, { option: "n", count: 1, files: ["symbols", "symbols"] }),
-      "==> symbols <==\n*\n\n==> symbols <==\n*"
+      head(mockedFS, { option: "n", count: 1, files: ["symbols", "vowels"] }),
+      "==> symbols <==\n*\n\n==> vowels <==\na"
     );
     equal(
-      head(mockedFS, { option: "n", count: 2, files: ["symbols", "symbols"] }),
-      "==> symbols <==\n*\n@\n\n==> symbols <==\n*\n@"
+      head(mockedFS, { option: "n", count: 2, files: ["vowels", "symbols"] }),
+      "==> vowels <==\na\ne\n\n==> symbols <==\n*\n@"
     );
   });
 
@@ -182,8 +176,8 @@ describe("head", function() {
       "head: letters: No such file or directory"
     );
     equal(
-      head(mockedFS, { option: "n", count: 2, files: ["letters"] }),
-      "head: letters: No such file or directory"
+      head(mockedFS, { option: "n", count: 2, files: ["characters"] }),
+      "head: characters: No such file or directory"
     );
   });
 
@@ -242,23 +236,23 @@ describe("tail", function() {
 
   it("should return given count of bytes of all files from bottom seperated by file names if option is c", function() {
     equal(
-      tail(mockedFS, { option: "c", count: 1, files: ["symbols", "symbols"] }),
-      "==> symbols <==\n#\n\n==> symbols <==\n#"
+      tail(mockedFS, { option: "c", count: 1, files: ["symbols", "vowels"] }),
+      "==> symbols <==\n#\n\n==> vowels <==\nu"
     );
     equal(
-      tail(mockedFS, { option: "c", count: 2, files: ["symbols", "symbols"] }),
-      "==> symbols <==\n\n#\n\n==> symbols <==\n\n#"
+      tail(mockedFS, { option: "c", count: 2, files: ["vowels", "symbols"] }),
+      "==> vowels <==\n\nu\n\n==> symbols <==\n\n#"
     );
   });
 
   it("should return given count of lines of all files from bottom seperated by files names if option is n", function() {
     equal(
-      tail(mockedFS, { option: "n", count: 1, files: ["symbols", "symbols"] }),
-      "==> symbols <==\n#\n\n==> symbols <==\n#"
+      tail(mockedFS, { option: "n", count: 1, files: ["symbols", "vowels"] }),
+      "==> symbols <==\n#\n\n==> vowels <==\nu"
     );
     equal(
-      tail(mockedFS, { option: "n", count: 2, files: ["symbols", "symbols"] }),
-      "==> symbols <==\n$\n#\n\n==> symbols <==\n$\n#"
+      tail(mockedFS, { option: "n", count: 2, files: ["vowels", "symbols"] }),
+      "==> vowels <==\no\nu\n\n==> symbols <==\n$\n#"
     );
   });
 
@@ -268,8 +262,8 @@ describe("tail", function() {
       "tail: letters: No such file or directory"
     );
     equal(
-      tail(mockedFS, { option: "n", count: 2, files: ["letters"] }),
-      "tail: letters: No such file or directory"
+      tail(mockedFS, { option: "n", count: 2, files: ["characters"] }),
+      "tail: characters: No such file or directory"
     );
   });
 
