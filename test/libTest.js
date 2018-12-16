@@ -78,16 +78,26 @@ describe("extractContent", function() {
 });
 
 describe("extractHeadContent", function() {
-  it("should return given count of elements from start of an array", function() {
+  it("should return given count of elements from start of an array if count is less than array length", function() {
     deepEqual(extractHeadContent(["*", "@", "%", "$", "#"], 1), ["*"]);
     deepEqual(extractHeadContent(["*", "@", "%", "$", "#"], 2), ["*", "@"]);
+  });
+
+  it("should return all elements if count is greater than array length", function() {
+    deepEqual(extractHeadContent(["*", "@", "%", "$", "#"], 10), ["*", "@", "%", "$", "#"]);
+    deepEqual(extractHeadContent(["*", "@", "%", "$", "#"], 20), ["*", "@", "%", "$", "#"]);
   });
 });
 
 describe("extractTailContent", function() {
-  it("should return given count of elements from end of an array", function() {
+  it("should return given count of elements from end of an array if count is less than array length", function() {
     deepEqual(extractTailContent(["*", "@", "%", "$", "#"], 1), ["#"]);
     deepEqual(extractTailContent(["*", "@", "%", "$", "#"], 2), ["$", "#"]);
+  });
+
+  it("should return all elements if count is greater than array length", function() {
+    deepEqual(extractTailContent(["*", "@", "%", "$", "#"], 10), ["*", "@", "%", "$", "#"]);
+    deepEqual(extractTailContent(["*", "@", "%", "$", "#"], 20), ["*", "@", "%", "$", "#"]);
   });
 });
 
