@@ -49,9 +49,13 @@ const areMatched = function(arg1, arg2) {
   return arg1 === arg2;
 };
 
-const mockedReader = function(expectedFileName, encoding, content) {
-  return function(actualFileName, encoding) {
-    if (areMatched(expectedFileName, actualFileName)) {
+const areFilesAndEnocodingSame = function(expectedFileName, actualFileName, expectedEnocoding, actualEnocoding) {
+  return areMatched(expectedFileName, actualFileName) && areMatched(expectedEnocoding, actualEnocoding);
+};
+
+const mockedReader = function(expectedFileName, expectedEnocoding, content) {
+  return function(actualFileName, actualEnocoding) {
+    if (areFilesAndEnocodingSame(expectedFileName, actualFileName, expectedEnocoding, actualEnocoding)) {
       return content;
     }
   };
