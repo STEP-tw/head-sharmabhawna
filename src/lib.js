@@ -10,12 +10,12 @@ const extractRequiredContent = function(
   fileName
 ) {
   let delimiter = selectDelimiter(option);
-  let splittedContent = extractContent(fs, fileName).split(delimiter);
-  let slicedContent = extractTailContent(splittedContent, count);
+  let contents = extractContent(fs, fileName).split(delimiter);
+  let requiredContents = extractTailContent(contents, count);
   if (callingContext == "head") {
-    slicedContent = extractHeadContent(splittedContent, count);
+    requiredContents = extractHeadContent(contents, count);
   }
-  return slicedContent.join(delimiter);
+  return requiredContents.join(delimiter);
 };
 
 const extractHeadContent = function(contents, count) {
