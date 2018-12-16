@@ -104,7 +104,7 @@ describe("extractTailContent", function() {
 });
 
 describe("extractRequiredContent", function() {
-  it("should return count of lines from top if calling context is head an", function() {
+  it("should return count of lines from top if calling context is head and option is n", function() {
     equal(extractRequiredContent("head", mockedFS, "n", 1, "symbols"), "*");
     equal(extractRequiredContent("head", mockedFS, "n", 2, "symbols"), "*\n@");
   });
@@ -277,7 +277,7 @@ describe("head", function() {
     equal( head(mockedFS, parsedInputs ), "*" );
   });
 
-  it("should return top two bytes of file", function() {
+  it("should return first two bytes of file", function() {
     let parsedInputs = { option: "c", count: 2, files: ["symbols"] };
     equal( head(mockedFS, parsedInputs), "*\n" );
   });
@@ -287,7 +287,7 @@ describe("head", function() {
     equal( head(mockedFS, parsedInputs), "*" );
   });
 
-  it("should return top two lines of file", function() {
+  it("should return first two lines of file", function() {
     let parsedInputs = { option: "n", count: 2, files: ["symbols"] };
     equal(head(mockedFS, parsedInputs), "*\n@" );
   });
@@ -298,7 +298,7 @@ describe("head", function() {
     equal( head(mockedFS, parsedInputs), expectedOutput );
   });
 
-  it("should return top two bytes of all files seperated by file names", function() {
+  it("should return first two bytes of all files seperated by file names", function() {
     let parsedInputs = { option: "c", count: 2, files: ["vowels", "symbols"] };
     let expectedOutput = "==> vowels <==\na\n\n\n==> symbols <==\n*\n";
     equal( head(mockedFS, parsedInputs), expectedOutput ) ;
@@ -310,7 +310,7 @@ describe("head", function() {
     equal( head(mockedFS, parsedInputs), expectedOutput );
   });
 
-  it("should return top two lines of all files seperated by file names", function() {
+  it("should return first two lines of all files seperated by file names", function() {
     let parsedInputs = { option: "n", count: 2, files: ["vowels", "symbols"] };
     let expectedOutput = "==> vowels <==\na\ne\n\n==> symbols <==\n*\n@";
     equal( head(mockedFS, parsedInputs), expectedOutput );
