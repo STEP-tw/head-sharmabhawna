@@ -1,6 +1,6 @@
 const { deepEqual } = require("assert");
 
-const { segregateInputs } = require("../src/parsingInputLib");
+const { segregateInputs } = require("../src/parseInputs.js");
 
 describe("segregateInputs", function() {
   it("should return object containing n as defult option and 10 as defult count value", function() {

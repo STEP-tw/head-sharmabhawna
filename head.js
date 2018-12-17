@@ -1,6 +1,6 @@
 const fs = require("fs");
 const { head } = require("./src/lib.js");
-const { segregateInputs } = require("./src/parsingInputLib.js");
+const { segregateInputs } = require("./src/parseImputs.js");
 
 const main = function() {
   let parsedInputs = segregateInputs(process.argv.slice(2));
