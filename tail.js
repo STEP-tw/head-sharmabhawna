@@ -21,8 +21,8 @@ const { tail } = require("./src/lib.js");
 const { segregateInputs } = require("./src/parsingInputLib");
 
 const main = function() {
-  let inputs = segregateInputs(process.argv.slice(2));
-  console.log(tail(fs, inputs));
+  let parsedInputs = segregateInputs(process.argv.slice(2));
+  console.log(tail(fs, parsedInputs));
 }
 
 main();
