@@ -1,6 +1,6 @@
-const { equal, deepEqual } = require("assert");
+const { deepEqual } = require("assert");
 
-const { extractOption, segregateInputs } = require("../src/parsingInputLib");
+const { segregateInputs } = require("../src/parsingInputLib");
 
 describe("segregateInputs", function() {
   it("should return object containing n as defult option and 10 as defult count value", function() {
@@ -60,6 +60,16 @@ describe("segregateInputs", function() {
       count: "12",
       files: ["file1"]
     });
+    deepEqual(segregateInputs(["-p5", "file1"]), {
+      option: "p",
+      count: "5",
+      files: ["file1"]
+    });
+    deepEqual(segregateInputs(["-p12", "file1"]), {
+      option: "p",
+      count: "12",
+      files: ["file1"]
+    });
     deepEqual(segregateInputs(["-n5", "file1", "file2"]), {
       option: "n",
       count: "5",
@@ -68,6 +78,16 @@ describe("segregateInputs", function() {
     deepEqual(segregateInputs(["-c5", "file1", "file2"]), {
       option: "c",
       count: "5",
+      files: ["file1", "file2"]
+    });
+    deepEqual(segregateInputs(["-p5", "file1", "file2"]), {
+      option: "p",
+      count: "5",
+      files: ["file1", "file2"]
+    });
+    deepEqual(segregateInputs(["-p12", "file1", "file2"]), {
+      option: "p",
+      count: "12",
       files: ["file1", "file2"]
     });
   });
@@ -93,6 +113,16 @@ describe("segregateInputs", function() {
       count: "12",
       files: ["file1"]
     });
+    deepEqual(segregateInputs(["-p", "5", "file1"]), {
+      option: "p",
+      count: "5",
+      files: ["file1"]
+    });
+    deepEqual(segregateInputs(["-p", "12", "file1"]), {
+      option: "p",
+      count: "12",
+      files: ["file1"]
+    });
     deepEqual(segregateInputs(["-n", "5", "file1", "file2"]), {
       option: "n",
       count: "5",
@@ -103,19 +133,10 @@ describe("segregateInputs", function() {
       count: "5",
       files: ["file1", "file2"]
     });
-  });
-});
-
-describe("extractOption", function() {
-  it("should return c if input starts with -c", function() {
-    equal(extractOption("-c"), "c");
-    equal(extractOption("-c5"), "c");
-  });
-
-  it("should return n if input does not start with -c", function() {
-    equal(extractOption("-5"), "n");
-    equal(extractOption("-n"), "n");
-    equal(extractOption("-n5"), "n");
-    equal(extractOption("file"), "n");
+    deepEqual(segregateInputs(["-p", "5", "file1", "file2"]), {
+      option: "p",
+      count: "5",
+      files: ["file1", "file2"]
+    });
   });
 });
