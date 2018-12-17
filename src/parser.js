@@ -1,24 +1,48 @@
-const parse = function(usrInputs) {
-  let result = { option: "n", count: 10, files: usrInputs };
+const hasNoOption = function (firstArg) {
+  return !isNaN(firstArg[1]);
+};
 
-  if (!usrInputs[0].startsWith("-")) {
-    return result;
-  }
-  result.files = usrInputs.slice(1);
-  result.count = usrInputs[0].slice(2);
-  result.option = usrInputs[0].slice(1,2);
+const hasOptionWithcount = function (firstArg) {
+  return !isNaN(firstArg[2]);
+};
 
-  if (!isNaN(usrInputs[0][1])) {
-    result.count = usrInputs[0].slice(1);
-    result.option = "n";
+const hasOptionWithoutcount = function (secondArg) {
+  return !isNaN(secondArg);
+};
+
+const getDefaultOptionAndCount = function (userInputs) {
+  return { option: "n", count: 10, files: userInputs };
+};
+
+const getDefaultOption = function (userInputs) {
+  return { option: "n", count: userInputs[0].slice(1), files: userInputs.slice(1) };
+};
+
+const pasreOptionWithCount = function (userInputs) {
+  return { option: userInputs[0].slice(1, 2), count: userInputs[0].slice(2), files: userInputs.slice(1) };
+};
+
+const pasreOptionWithoutCount = function (userInputs) {
+  return { option: userInputs[0].slice(1), count: userInputs[1], files: userInputs.slice(2) };
+};
+
+const parse = function (userInputs) {
+  let firstArg = userInputs[0];
+  let secondArg = userInputs[1];
+
+  if (hasNoOption(firstArg)) {
+    return getDefaultOption(userInputs);
   }
 
-  if (!isNaN(usrInputs[1])) {
-    result.count = usrInputs[1];
-    result.files = usrInputs.slice(2);
-    result.option = usrInputs[0].slice(1)
+  if (hasOptionWithcount(firstArg)) {
+    return pasreOptionWithCount(userInputs);
   }
-  return result;
+
+  if (hasOptionWithoutcount(secondArg)) {
+    return pasreOptionWithoutCount(userInputs);
+  }
+  return getDefaultOptionAndCount(userInputs);
+
 };
 
 module.exports = { parse };
