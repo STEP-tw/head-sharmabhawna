@@ -1,6 +1,6 @@
 const { deepEqual } = require("assert");
 
-const { parse } = require("../src/parseInputs.js");
+const { parse } = require("../src/parser.js");
 
 describe("parse", function() {
   it("should return object containing n as defult option and 10 as defult count value", function() {
