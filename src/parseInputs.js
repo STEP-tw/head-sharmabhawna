@@ -1,4 +1,4 @@
-const segregateInputs = function(usrInputs) {
+const parse = function(usrInputs) {
   let result = { option: "n", count: 10, files: usrInputs };
 
   if (!usrInputs[0].startsWith("-")) {
@@ -21,4 +21,4 @@ const segregateInputs = function(usrInputs) {
   return result;
 };
 
-module.exports = { segregateInputs };
+module.exports = { parse };
