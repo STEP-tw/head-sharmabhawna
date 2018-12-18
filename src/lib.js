@@ -104,9 +104,9 @@ const head = function (fs, { option, count, files }) {
   if (isInvalid(count)) {
     return option == "n" ? lineCountError + count : byteCountError + count;
   }
-  let extractHeadContent = extractRequiredContent.bind(null, "head");
-  let contentExtractor = extractHeadContent.bind(
+  let contentExtractor = extractRequiredContent.bind(
     null,
+    "head",
     fs,
     option,
     count
@@ -121,9 +121,9 @@ const tail = function (fs, { option, count, files }) {
   if (isInvalid(count)) {
     return count == 0 ? "" : offsetError + count;
   }
-  let extractTailContent = extractRequiredContent.bind(null, "tail");
-  let contentExtractor = extractTailContent.bind(
+  let contentExtractor = extractRequiredContent.bind(
     null,
+    "tail",
     fs,
     option,
     count
