@@ -1,8 +1,8 @@
-const selectDelimiter = function(option) {
+const selectDelimiter = function (option) {
   return option == "c" ? "" : "\n";
 };
 
-const extractRequiredContent = function(
+const extractRequiredContent = function (
   callingContext,
   fs,
   option,
@@ -18,11 +18,11 @@ const extractRequiredContent = function(
   return requiredContents.join(delimiter);
 };
 
-const extractHeadContent = function(contents, count) {
+const extractHeadContent = function (contents, count) {
   return contents.slice(0, count);
 };
 
-const extractTailContent = function(contents, count) {
+const extractTailContent = function (contents, count) {
   let lengthOfFile = contents.length;
   let requiredCount = lengthOfFile - count;
   if (count > lengthOfFile) {
@@ -31,16 +31,16 @@ const extractTailContent = function(contents, count) {
   return contents.slice(requiredCount);
 };
 
-const extractContent = function(fs, fileName) {
+const extractContent = function (fs, fileName) {
   let { readFileSync } = fs;
   return readFileSync(fileName, "utf8");
 };
 
-const isInvalid = function(count) {
+const isInvalid = function (count) {
   return count == 0 || isNaN(count);
 };
 
-const extractSingleFileContent = function(
+const extractSingleFileContent = function (
   callingContext,
   existanceCheckerFn,
   contentExtractorFn,
@@ -52,18 +52,18 @@ const extractSingleFileContent = function(
   return contentExtractorFn(file);
 };
 
-const generateHeader = function(fileName) {
+const generateHeader = function (fileName) {
   return "\n==> " + fileName + " <==\n";
 };
 
-const extractMultipleFilesContent = function(
+const extractMultipleFilesContent = function (
   callingContext,
   existanceCheckerFn,
   contentExtractorFn,
   files
 ) {
   return files
-    .map(function(file) {
+    .map(function (file) {
       let data = extractSingleFileContent(
         callingContext,
         existanceCheckerFn,
@@ -79,7 +79,7 @@ const extractMultipleFilesContent = function(
     .slice(1);
 };
 
-const applyRequiredFunc = function(
+const applyRequiredFunc = function (
   callingContext,
   existanceCheckerFn,
   contentExtractorFn,
@@ -101,7 +101,7 @@ const applyRequiredFunc = function(
   );
 };
 
-const head = function(fs, { option, count, files }) {
+const head = function (fs, { option, count, files }) {
   let lineCountError = "head: illegal line count -- ";
 
   let byteCountError = "head: illegal byte count -- ";
@@ -120,7 +120,7 @@ const head = function(fs, { option, count, files }) {
   return applyRequiredFunc("head", existsSync, contentExtractor, files);
 };
 
-const tail = function(fs, { option, count, files }) {
+const tail = function (fs, { option, count, files }) {
   let offsetError = "tail: illegal offset -- ";
 
   let { existsSync } = fs;
