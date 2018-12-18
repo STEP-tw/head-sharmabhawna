@@ -26,7 +26,7 @@ const mockedReader = function (expectedFiles, expectedEnocoding) {
   };
 };
 
-let files = { "vowels": "a\ne\ni\no\nu", "symbols": "*\n@\n%\n$\n#" };
+let files = { "vowels": "a\ne\ni\no\nu", "symbols": "*\n@\n%\n$\n#", "numbers": "" };
 
 const mockedExistanceChecker = function (expectedFiles) {
   return function (actualFileName) {
@@ -70,9 +70,12 @@ describe("isInvalid", function () {
 });
 
 describe("extractContent", function () {
+  it("should return empty string for empty file", function () {
+    equal(extractContent(mockedFS, "numbers"), "");
+  });
+
   it("should return full content of file", function () {
     equal(extractContent(mockedFS, "symbols"), "*\n@\n%\n$\n#");
-    equal(extractContent(mockedFS, "vowels"), "a\ne\ni\no\nu");
   });
 });
 
