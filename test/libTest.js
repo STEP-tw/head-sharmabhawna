@@ -44,7 +44,7 @@ describe("selectDelimiter", function () {
     equal(selectDelimiter("n"), "\n");
   });
 
-  it("should return empty string if n is given as option", function () {
+  it("should return empty string if c is given as option", function () {
     equal(selectDelimiter("c"), "");
   });
 });
