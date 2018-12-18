@@ -116,24 +116,32 @@ describe("last", function () {
 });
 
 describe("extractRequiredContent", function () {
-  it("should return count of lines from top if calling context is head and option is n", function () {
-    equal(extractRequiredContent("head", mockedFS, "n", 1, "symbols"), "*");
-    equal(extractRequiredContent("head", mockedFS, "n", 2, "symbols"), "*\n@");
+  describe("context: head", function () {
+    it("should return empty string when file is empty", function () {
+      equal(extractRequiredContent("head", mockedFS, "n", 2, "numbers"), "");
+    });
+
+    it("should return first n lines of file when option is n", function () {
+      equal(extractRequiredContent("head", mockedFS, "n", 2, "symbols"), "*\n@");
+    });
+
+    it("should return first n bytes of file when option is c", function () {
+      equal(extractRequiredContent("head", mockedFS, "c", 2, "symbols"), "*\n");
+    });
   });
 
-  it("should return count of bytes from top if calling context is head and and option is c", function () {
-    equal(extractRequiredContent("head", mockedFS, "c", 1, "symbols"), "*");
-    equal(extractRequiredContent("head", mockedFS, "c", 2, "symbols"), "*\n");
-  });
+  describe("context: tail", function () {
+    it("should return empty string when file is empty", function () {
+      equal(extractRequiredContent("tail", mockedFS, "n", 2, "numbers"), "");
+    });
 
-  it("should return count of lines from bottom if calling context is tail and and option is n", function () {
-    equal(extractRequiredContent("tail", mockedFS, "n", 1, "symbols"), "#");
-    equal(extractRequiredContent("tail", mockedFS, "n", 2, "symbols"), "$\n#");
-  });
+    it("should return last n lines of file when option is n", function () {
+      equal(extractRequiredContent("tail", mockedFS, "n", 2, "symbols"), "$\n#");
+    });
 
-  it("should return count of bytes from bottom if calling context is tail and and option is c", function () {
-    equal(extractRequiredContent("tail", mockedFS, "c", 1, "symbols"), "#");
-    equal(extractRequiredContent("tail", mockedFS, "c", 2, "symbols"), "\n#");
+    it("should last return n bytes of file when option is c", function () {
+      equal(extractRequiredContent("tail", mockedFS, "c", 2, "symbols"), "\n#");
+    });
   });
 });
 
