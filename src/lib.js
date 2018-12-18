@@ -35,7 +35,7 @@ const isInvalid = function (count) {
   return count == 0 || isNaN(count);
 };
 
-const extractSingleFileContent = function (
+const extractFileContent = function (
   callingContext,
   existanceCheckerFn,
   contentExtractorFn,
@@ -51,7 +51,7 @@ const generateHeader = function (fileName) {
   return "\n==> " + fileName + " <==\n";
 };
 
-const extractMultipleFilesContent = function (
+const extractFilesContent = function (
   callingContext,
   existanceCheckerFn,
   contentExtractorFn,
@@ -59,7 +59,7 @@ const extractMultipleFilesContent = function (
 ) {
   return files
     .map(function (file) {
-      let data = extractSingleFileContent(
+      let data = extractFileContent(
         callingContext,
         existanceCheckerFn,
         contentExtractorFn,
@@ -81,14 +81,14 @@ const applyRequiredFunc = function (
   files
 ) {
   if (files.length == 1) {
-    return extractSingleFileContent(
+    return extractFileContent(
       callingContext,
       existanceCheckerFn,
       contentExtractorFn,
       files[0]
     );
   }
-  return extractMultipleFilesContent(
+  return extractFilesContent(
     callingContext,
     existanceCheckerFn,
     contentExtractorFn,
@@ -140,8 +140,8 @@ module.exports = {
   extractContent,
   extractHeadContent,
   extractTailContent,
-  extractSingleFileContent,
-  extractMultipleFilesContent,
+  extractFileContent,
+  extractFilesContent,
   head,
   tail
 };
