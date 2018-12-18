@@ -95,41 +95,29 @@ const applyRequiredFunc = function (
   );
 };
 
-const head = function (fs, { option, count, files }) {
+const headTail = function (callingContext, fs, { option, count, files }) {
+  let offsetError = "tail: illegal offset -- ";
   let lineCountError = "head: illegal line count -- ";
-
   let byteCountError = "head: illegal byte count -- ";
-
   let { existsSync } = fs;
   if (isInvalid(count)) {
+    if (callingContext == "tail") {
+      return count == 0 ? "" : offsetError + count;
+    }
     return option == "n" ? lineCountError + count : byteCountError + count;
   }
   let contentExtractor = extractRequiredContent.bind(
     null,
-    "head",
+    callingContext,
     fs,
     option,
     count
   );
-  return applyRequiredFunc("head", existsSync, contentExtractor, files);
+  return applyRequiredFunc(callingContext, existsSync, contentExtractor, files);
 };
 
-const tail = function (fs, { option, count, files }) {
-  let offsetError = "tail: illegal offset -- ";
-
-  let { existsSync } = fs;
-  if (isInvalid(count)) {
-    return count == 0 ? "" : offsetError + count;
-  }
-  let contentExtractor = extractRequiredContent.bind(
-    null,
-    "tail",
-    fs,
-    option,
-    count
-  );
-  return applyRequiredFunc("tail", existsSync, contentExtractor, files);
-};
+const head = headTail.bind(null, "head");
+const tail = headTail.bind(null, "tail");
 
 module.exports = {
   selectDelimiter,
