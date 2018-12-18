@@ -37,14 +37,14 @@ const isInvalid = function (count) {
 
 const extractFileContent = function (
   callingContext,
-  existanceCheckerFn,
-  contentExtractorFn,
+  existanceChecker,
+  contentExtractor,
   file
 ) {
-  if (!existanceCheckerFn(file)) {
+  if (!existanceChecker(file)) {
     return callingContext + ": " + file + ": No such file or directory";
   }
-  return contentExtractorFn(file);
+  return contentExtractor(file);
 };
 
 const generateHeader = function (fileName) {
@@ -53,16 +53,16 @@ const generateHeader = function (fileName) {
 
 const extractFilesContent = function (
   callingContext,
-  existanceCheckerFn,
-  contentExtractorFn,
+  existanceChecker,
+  contentExtractor,
   files
 ) {
   return files
     .map(function (file) {
       let content = extractFileContent(
         callingContext,
-        existanceCheckerFn,
-        contentExtractorFn,
+        existanceChecker,
+        contentExtractor,
         file
       );
       if (content.match(/: No such file or directory/)) {
@@ -75,22 +75,22 @@ const extractFilesContent = function (
 
 const applyRequiredFunc = function (
   callingContext,
-  existanceCheckerFn,
-  contentExtractorFn,
+  existanceChecker,
+  contentExtractor,
   files
 ) {
   if (files.length == 1) {
     return extractFileContent(
       callingContext,
-      existanceCheckerFn,
-      contentExtractorFn,
+      existanceChecker,
+      contentExtractor,
       files[0]
     );
   }
   return extractFilesContent(
     callingContext,
-    existanceCheckerFn,
-    contentExtractorFn,
+    existanceChecker,
+    contentExtractor,
     files
   );
 };
