@@ -59,16 +59,16 @@ const extractFilesContent = function (
 ) {
   return files
     .map(function (file) {
-      let data = extractFileContent(
+      let content = extractFileContent(
         callingContext,
         existanceCheckerFn,
         contentExtractorFn,
         file
       );
-      if (data.match(/: No such file or directory/)) {
-        return "\n" + data;
+      if (content.match(/: No such file or directory/)) {
+        return "\n" + content;
       }
-      return generateHeader(file) + data;
+      return generateHeader(file) + content;
     })
     .join("\n")
     .slice(1);
