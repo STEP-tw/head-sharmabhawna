@@ -182,7 +182,7 @@ describe("extractFileContent", function () {
       equal(extractContent("letters"), expectedOutput);
     });
 
-    it("should empty string when file is empty", function () {
+    it("should return empty string when file is empty", function () {
       equal(extractContent("numbers"), "");
     });
 
@@ -263,8 +263,6 @@ describe("extractFilesContent", function () {
       equal(extractContent(["symbols", "vowels"]), expectedOutput);
     });
   });
-
-
 });
 
 describe("head", function () {
