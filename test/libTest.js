@@ -94,14 +94,16 @@ describe("take", function () {
 });
 
 describe("last", function () {
-  it("should return given count of elements from end of an array if count is less than array length", function () {
-    deepEqual(last(["*", "@", "%", "$", "#"], 1), ["#"]);
+  it("should return empty array when empty array is given", function () {
+    deepEqual(last([], 2), []);
+  });
+
+  it("should return last n elements of array if n is less than array length", function () {
     deepEqual(last(["*", "@", "%", "$", "#"], 2), ["$", "#"]);
   });
 
-  it("should return all elements if count is greater than array length", function () {
+  it("should return all elements when n is greater than array length", function () {
     deepEqual(last(["*", "@", "%", "$", "#"], 10), ["*", "@", "%", "$", "#"]);
-    deepEqual(last(["*", "@", "%", "$", "#"], 20), ["*", "@", "%", "$", "#"]);
   });
 });
 
