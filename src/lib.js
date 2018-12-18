@@ -11,18 +11,18 @@ const extractRequiredContent = function (
 ) {
   let delimiter = selectDelimiter(option);
   let contents = extractContent(fs, fileName).split(delimiter);
-  let requiredContents = extractTailContent(contents, count);
+  let requiredContents = last(contents, count);
   if (callingContext == "head") {
-    requiredContents = extractHeadContent(contents, count);
+    requiredContents = take(contents, count);
   }
   return requiredContents.join(delimiter);
 };
 
-const extractHeadContent = function (contents, count) {
+const take = function (contents, count) {
   return contents.slice(0, count);
 };
 
-const extractTailContent = function (contents, count) {
+const last = function (contents, count) {
   return contents.slice(-count);
 };
 
@@ -138,8 +138,8 @@ module.exports = {
   isInvalid,
   extractRequiredContent,
   extractContent,
-  extractHeadContent,
-  extractTailContent,
+  take,
+  last,
   extractFileContent,
   extractFilesContent,
   head,
