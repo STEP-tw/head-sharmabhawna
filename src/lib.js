@@ -48,7 +48,7 @@ const extractFileContent = function (
 };
 
 const generateHeader = function (fileName) {
-  return "\n==> " + fileName + " <==\n";
+  return "==> " + fileName + " <==";
 };
 
 const extractFilesContent = function (
@@ -66,12 +66,11 @@ const extractFilesContent = function (
         file
       );
       if (content.match(/: No such file or directory/)) {
-        return "\n" + content;
+        return content;
       }
-      return generateHeader(file) + content;
+      return generateHeader(file) + "\n" + content;
     })
-    .join("\n")
-    .slice(1);
+    .join("\n");
 };
 
 const applyRequiredFunc = function (

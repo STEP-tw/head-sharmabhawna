@@ -51,8 +51,8 @@ describe("selectDelimiter", function () {
 
 describe("generateHeader", function () {
   it("should return header of given file name", function () {
-    equal(generateHeader("symbols"), "\n==> symbols <==\n");
-    equal(generateHeader("letters"), "\n==> letters <==\n");
+    equal(generateHeader("symbols"), "==> symbols <==");
+    equal(generateHeader("letters"), "==> letters <==");
   });
 });
 
@@ -181,7 +181,7 @@ describe("extractFilesContent", function () {
   it("should return first byte of all files seperated by their names", function () {
     let contentExtractorFn = extractRequiredContent.bind("null", "head", mockedFS, "c", 1);
     let extractContent = extractFilesContent.bind("null", "head", existanceCheckerFn, contentExtractorFn);
-    let expectedOutput = "==> symbols <==\n*\n\n==> vowels <==\na"
+    let expectedOutput = "==> symbols <==\n*\n==> vowels <==\na"
 
     equal(extractContent(["symbols", "vowels"]), expectedOutput);
   });
@@ -189,7 +189,7 @@ describe("extractFilesContent", function () {
   it("should return first line of all files seperated by their names", function () {
     let contentExtractorFn = extractRequiredContent.bind("null", "head", mockedFS, "n", 1);
     let extractContent = extractFilesContent.bind("null", "head", existanceCheckerFn, contentExtractorFn);
-    let expectedOutput = "==> symbols <==\n*\n\n==> vowels <==\na"
+    let expectedOutput = "==> symbols <==\n*\n==> vowels <==\na"
 
     equal(extractContent(["symbols", "vowels"]), expectedOutput);
   });
@@ -198,7 +198,7 @@ describe("extractFilesContent", function () {
     let contentExtractorFn = extractRequiredContent.bind("null", "head", mockedFS, "n", 1);
     let extractContent = extractFilesContent.bind("null", "head", existanceCheckerFn, contentExtractorFn);
 
-    let expectedOutput = "head: letters: No such file or directory\n\nhead: characters: No such file or directory";
+    let expectedOutput = "head: letters: No such file or directory\nhead: characters: No such file or directory";
     equal(extractContent(["letters", "characters"]), expectedOutput);
   });
 
@@ -206,14 +206,14 @@ describe("extractFilesContent", function () {
     let contentExtractorFn = extractRequiredContent.bind("null", "head", mockedFS, "n", 2);
     let extractContent = extractFilesContent.bind("null", "head", existanceCheckerFn, contentExtractorFn);
 
-    let expectedOutput = "==> vowels <==\na\ne\n\nhead: characters: No such file or directory\n\n==> symbols <==\n*\n@";
+    let expectedOutput = "==> vowels <==\na\ne\nhead: characters: No such file or directory\n==> symbols <==\n*\n@";
     equal(extractContent(["vowels", "characters", "symbols"]), expectedOutput);
   });
 
   it("should return last byte of all files seperated by their names", function () {
     let contentExtractorFn = extractRequiredContent.bind("null", "tail", mockedFS, "c", 1);
     let extractContent = extractFilesContent.bind("null", "tail", existanceCheckerFn, contentExtractorFn);
-    let expectedOutput = "==> symbols <==\n#\n\n==> vowels <==\nu"
+    let expectedOutput = "==> symbols <==\n#\n==> vowels <==\nu"
 
     equal(extractContent(["symbols", "vowels"]), expectedOutput);
   });
@@ -221,7 +221,7 @@ describe("extractFilesContent", function () {
   it("should return last line of all files seperated by their names", function () {
     let contentExtractorFn = extractRequiredContent.bind("null", "tail", mockedFS, "n", 1);
     let extractContent = extractFilesContent.bind("null", "tail", existanceCheckerFn, contentExtractorFn);
-    let expectedOutput = "==> symbols <==\n#\n\n==> vowels <==\nu"
+    let expectedOutput = "==> symbols <==\n#\n==> vowels <==\nu"
 
     equal(extractContent(["symbols", "vowels"]), expectedOutput);
   });
@@ -229,7 +229,7 @@ describe("extractFilesContent", function () {
   it("should throw files non existance error w.r.t tail", function () {
     let contentExtractorFn = extractRequiredContent.bind("null", "tail", mockedFS, "n", 1);
     let extractContent = extractFilesContent.bind("null", "tail", existanceCheckerFn, contentExtractorFn);
-    let expectedOutput = "tail: letters: No such file or directory\n\ntail: characters: No such file or directory";
+    let expectedOutput = "tail: letters: No such file or directory\ntail: characters: No such file or directory";
 
     equal(extractContent(["letters", "characters"]), expectedOutput);
   });
@@ -238,7 +238,7 @@ describe("extractFilesContent", function () {
     let contentExtractorFn = extractRequiredContent.bind("null", "tail", mockedFS, "n", 2);
     let extractContent = extractFilesContent.bind("null", "tail", existanceCheckerFn, contentExtractorFn);
 
-    let expectedOutput = "==> vowels <==\no\nu\n\ntail: characters: No such file or directory\n\n==> symbols <==\n$\n#";
+    let expectedOutput = "==> vowels <==\no\nu\ntail: characters: No such file or directory\n==> symbols <==\n$\n#";
     equal(extractContent(["vowels", "characters", "symbols"]), expectedOutput);
   });
 });
@@ -294,25 +294,25 @@ describe("head", function () {
 
   it("should return first byte of all files seperated by file names", function () {
     let parsedInputs = { option: "c", count: 1, files: ["symbols", "vowels"] };
-    let expectedOutput = "==> symbols <==\n*\n\n==> vowels <==\na";
+    let expectedOutput = "==> symbols <==\n*\n==> vowels <==\na";
     equal(head(mockedFS, parsedInputs), expectedOutput);
   });
 
   it("should return first two bytes of all files seperated by file names", function () {
     let parsedInputs = { option: "c", count: 2, files: ["vowels", "symbols"] };
-    let expectedOutput = "==> vowels <==\na\n\n\n==> symbols <==\n*\n";
+    let expectedOutput = "==> vowels <==\na\n\n==> symbols <==\n*\n";
     equal(head(mockedFS, parsedInputs), expectedOutput);
   });
 
   it("should return first line of all files seperated by file names", function () {
     let parsedInputs = { option: "n", count: 1, files: ["symbols", "vowels"] };
-    let expectedOutput = "==> symbols <==\n*\n\n==> vowels <==\na";
+    let expectedOutput = "==> symbols <==\n*\n==> vowels <==\na";
     equal(head(mockedFS, parsedInputs), expectedOutput);
   });
 
   it("should return first two lines of all files seperated by file names", function () {
     let parsedInputs = { option: "n", count: 2, files: ["vowels", "symbols"] };
-    let expectedOutput = "==> vowels <==\na\ne\n\n==> symbols <==\n*\n@";
+    let expectedOutput = "==> vowels <==\na\ne\n==> symbols <==\n*\n@";
     equal(head(mockedFS, parsedInputs), expectedOutput);
   });
 
@@ -324,31 +324,31 @@ describe("head", function () {
 
   it("should throw error that files are not present", function () {
     let parsedInputs = { option: "c", count: 1, files: ["letters", "characters"] };
-    let expectedOutput = "head: letters: No such file or directory\n\nhead: characters: No such file or directory"
+    let expectedOutput = "head: letters: No such file or directory\nhead: characters: No such file or directory"
     equal(head(mockedFS, parsedInputs), expectedOutput);
   });
 
   it("firstly should throw error for file that is not present and then return first byte of existing file", function () {
     let parsedInputs = { option: "c", count: 1, files: ["letters", "symbols"] };
-    let expectedOutput = "head: letters: No such file or directory\n\n==> symbols <==\n*";
+    let expectedOutput = "head: letters: No such file or directory\n==> symbols <==\n*";
     equal(head(mockedFS, parsedInputs), expectedOutput);
   });
 
   it("firstly should return first byte of existing file and then throw error for file that is not present", function () {
     let parsedInputs = { option: "c", count: 1, files: ["symbols", "letters"] };
-    let expectedOutput = "==> symbols <==\n*\n\nhead: letters: No such file or directory";
+    let expectedOutput = "==> symbols <==\n*\nhead: letters: No such file or directory";
     equal(head(mockedFS, parsedInputs), expectedOutput);
   });
 
   it("firstly should throw error for file that is not present and then return first line of existing file", function () {
     let parsedInputs = { option: "n", count: 1, files: ["letters", "symbols"] };
-    let expectedOutput = "head: letters: No such file or directory\n\n==> symbols <==\n*";
+    let expectedOutput = "head: letters: No such file or directory\n==> symbols <==\n*";
     equal(head(mockedFS, parsedInputs), expectedOutput);
   });
 
   it("firstly should return first line of existing file and then throw error for file that is not present", function () {
     let parsedInputs = { option: "n", count: 1, files: ["symbols", "letters"] };
-    let expectedOutput = "==> symbols <==\n*\n\nhead: letters: No such file or directory";
+    let expectedOutput = "==> symbols <==\n*\nhead: letters: No such file or directory";
     equal(head(mockedFS, parsedInputs), expectedOutput);
 
   });
@@ -405,25 +405,25 @@ describe("tail", function () {
 
   it("should return last byte of all files seperated by file names", function () {
     let parsedInputs = { option: "c", count: 1, files: ["symbols", "vowels"] };
-    let expectedOutput = "==> symbols <==\n#\n\n==> vowels <==\nu";
+    let expectedOutput = "==> symbols <==\n#\n==> vowels <==\nu";
     equal(tail(mockedFS, parsedInputs), expectedOutput);
   });
 
   it("should return last two bytes of all files seperated by file names", function () {
     let parsedInputs = { option: "c", count: 2, files: ["vowels", "symbols"] };
-    let expectedOutput = "==> vowels <==\n\nu\n\n==> symbols <==\n\n#";
+    let expectedOutput = "==> vowels <==\n\nu\n==> symbols <==\n\n#";
     equal(tail(mockedFS, parsedInputs), expectedOutput);
   });
 
   it("should return last line of all files seperated by file names", function () {
     let parsedInputs = { option: "n", count: 1, files: ["symbols", "vowels"] };
-    let expectedOutput = "==> symbols <==\n#\n\n==> vowels <==\nu";
+    let expectedOutput = "==> symbols <==\n#\n==> vowels <==\nu";
     equal(tail(mockedFS, parsedInputs), expectedOutput);
   });
 
   it("should return last two lines of all files seperated by file names", function () {
     let parsedInputs = { option: "n", count: 2, files: ["vowels", "symbols"] };
-    let expectedOutput = "==> vowels <==\no\nu\n\n==> symbols <==\n$\n#";
+    let expectedOutput = "==> vowels <==\no\nu\n==> symbols <==\n$\n#";
     equal(tail(mockedFS, parsedInputs), expectedOutput);
   });
 
@@ -435,31 +435,31 @@ describe("tail", function () {
 
   it("should throw error that files are not present", function () {
     let parsedInputs = { option: "c", count: 1, files: ["letters", "characters"] };
-    let expectedOutput = "tail: letters: No such file or directory\n\ntail: characters: No such file or directory"
+    let expectedOutput = "tail: letters: No such file or directory\ntail: characters: No such file or directory"
     equal(tail(mockedFS, parsedInputs), expectedOutput);
   });
 
   it("firstly should throw error for file that is not present and then return last byte of existing file", function () {
     let parsedInputs = { option: "c", count: 1, files: ["letters", "symbols"] };
-    let expectedOutput = "tail: letters: No such file or directory\n\n==> symbols <==\n#";
+    let expectedOutput = "tail: letters: No such file or directory\n==> symbols <==\n#";
     equal(tail(mockedFS, parsedInputs), expectedOutput);
   });
 
   it("firstly should return last byte of existing file and then throw error for file that is not present", function () {
     let parsedInputs = { option: "c", count: 1, files: ["symbols", "letters"] };
-    let expectedOutput = "==> symbols <==\n#\n\ntail: letters: No such file or directory";
+    let expectedOutput = "==> symbols <==\n#\ntail: letters: No such file or directory";
     equal(tail(mockedFS, parsedInputs), expectedOutput);
   });
 
   it("firstly should throw error for file that is not present and then return last line of existing file", function () {
     let parsedInputs = { option: "n", count: 1, files: ["letters", "symbols"] };
-    let expectedOutput = "tail: letters: No such file or directory\n\n==> symbols <==\n#";
+    let expectedOutput = "tail: letters: No such file or directory\n==> symbols <==\n#";
     equal(tail(mockedFS, parsedInputs), expectedOutput);
   });
 
   it("firstly should return last line of existing file and then throw error for file that is not present", function () {
     let parsedInputs = { option: "n", count: 1, files: ["symbols", "letters"] };
-    let expectedOutput = "==> symbols <==\n#\n\ntail: letters: No such file or directory";
+    let expectedOutput = "==> symbols <==\n#\ntail: letters: No such file or directory";
     equal(tail(mockedFS, parsedInputs), expectedOutput);
   });
 
