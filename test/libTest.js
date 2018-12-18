@@ -61,12 +61,10 @@ describe("isInvalid", function () {
   });
 
   it("should return true when count is non a number", function () {
-    equal(isInvalid("0x"), true);
     equal(isInvalid("10x"), true);
   });
 
   it("should return false when count is number", function () {
-    equal(isInvalid(1), false);
     equal(isInvalid(10), false);
   });
 });
