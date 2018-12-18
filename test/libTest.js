@@ -60,7 +60,7 @@ describe("isInvalid", function () {
     equal(isInvalid(0), true);
   });
 
-  it("should return true when count is non a number", function () {
+  it("should return true when count is not a number", function () {
     equal(isInvalid("10x"), true);
   });
 
