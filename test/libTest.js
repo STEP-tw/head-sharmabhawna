@@ -80,14 +80,16 @@ describe("extractContent", function () {
 });
 
 describe("take", function () {
-  it("should return given count of elements from start of an array if count is less than array length", function () {
-    deepEqual(take(["*", "@", "%", "$", "#"], 1), ["*"]);
+  it("should return empty array when empty array is given", function () {
+    deepEqual(take([], 2), []);
+  });
+
+  it("should return first n elements of array when n is less than array length", function () {
     deepEqual(take(["*", "@", "%", "$", "#"], 2), ["*", "@"]);
   });
 
-  it("should return all elements if count is greater than array length", function () {
+  it("should return all elements when n is greater than array length", function () {
     deepEqual(take(["*", "@", "%", "$", "#"], 10), ["*", "@", "%", "$", "#"]);
-    deepEqual(take(["*", "@", "%", "$", "#"], 20), ["*", "@", "%", "$", "#"]);
   });
 });
 
