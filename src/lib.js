@@ -1,3 +1,4 @@
+const { take, last } = require("./util.js");
 const selectDelimiter = function (option) {
   return option == "c" ? "" : "\n";
 };
@@ -16,14 +17,6 @@ const extractRequiredContent = function (
     requiredContents = take(contents, count);
   }
   return requiredContents.join(delimiter);
-};
-
-const take = function (contents, count) {
-  return contents.slice(0, count);
-};
-
-const last = function (contents, count) {
-  return contents.slice(-count);
 };
 
 const extractContent = function (fs, fileName) {
@@ -125,8 +118,6 @@ module.exports = {
   isInvalid,
   extractRequiredContent,
   extractContent,
-  take,
-  last,
   extractFileContent,
   extractFilesContent,
   head,
