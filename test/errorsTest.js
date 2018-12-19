@@ -1,5 +1,5 @@
 const { equal } = require("assert");
-const { isInvalid, countOffsetError, existanceError } = require("../src/errorHandler.js");
+const { isInvalid, countOffsetError, existanceError } = require("../src/errors.js");
 
 describe("isInvalid", function () {
     it("should return true when count is 0", function () {

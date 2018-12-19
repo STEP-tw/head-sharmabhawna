@@ -1,5 +1,5 @@
 const { take, last } = require("./util.js");
-const { isInvalid, countOffsetError, existanceError } = require("./errorHandler.js");
+const { isInvalid, countOffsetError, existanceError } = require("./errors.js");
 const { addHeader } = require("./format.js");
 
 const selectDelimiter = function (option) {
