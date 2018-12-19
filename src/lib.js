@@ -1,6 +1,6 @@
 const { take, last } = require("./util.js");
 const { isInvalid, countOffsetError, existanceError } = require("./errorHandler.js");
-const { generateHeader } = require("./formatText.js");
+const { addHeader } = require("./formatText.js");
 
 const selectDelimiter = function (option) {
   return option == "c" ? "" : "\n";
@@ -53,10 +53,7 @@ const extractFilesContent = function (
         contentExtractor,
         file
       );
-      if (content.match(/: No such file or directory/)) {
-        return content;
-      }
-      return generateHeader(file) + "\n" + content;
+      return addHeader(file, content);
     })
     .join("\n");
 };
