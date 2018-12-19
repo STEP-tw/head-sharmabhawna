@@ -2,7 +2,6 @@ const { equal } = require("assert");
 
 const {
   selectDelimiter,
-  generateHeader,
   extractRequiredContent,
   extractContent,
   extractFileContent,
@@ -43,12 +42,6 @@ describe("selectDelimiter", function () {
 
   it("should return empty string if c is given as option", function () {
     equal(selectDelimiter("c"), "");
-  });
-});
-
-describe("generateHeader", function () {
-  it("should return header of given file name", function () {
-    equal(generateHeader("symbols"), "==> symbols <==");
   });
 });
 

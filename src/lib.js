@@ -1,5 +1,6 @@
 const { take, last } = require("./util.js");
 const { isInvalid, countOffsetError, existanceError } = require("./errorHandler.js");
+const { generateHeader } = require("./formatText.js");
 
 const selectDelimiter = function (option) {
   return option == "c" ? "" : "\n";
@@ -36,10 +37,6 @@ const extractFileContent = function (
     return existanceError(callingContext, file);
   }
   return contentExtractor(file);
-};
-
-const generateHeader = function (fileName) {
-  return "==> " + fileName + " <==";
 };
 
 const extractFilesContent = function (
@@ -106,7 +103,6 @@ const tail = headTail.bind(null, "tail");
 
 module.exports = {
   selectDelimiter,
-  generateHeader,
   extractRequiredContent,
   extractContent,
   extractFileContent,
