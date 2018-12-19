@@ -1,5 +1,5 @@
 const { take, last } = require("./util.js");
-const { isInvalid, throwError } = require("./errorHandler.js");
+const { isInvalid, countOffsetError, existanceError } = require("./errorHandler.js");
 
 const selectDelimiter = function (option) {
   return option == "c" ? "" : "\n";
@@ -33,7 +33,7 @@ const extractFileContent = function (
   file
 ) {
   if (!existanceChecker(file)) {
-    return callingContext + ": " + file + ": No such file or directory";
+    return existanceError(callingContext, file);
   }
   return contentExtractor(file);
 };
@@ -89,7 +89,7 @@ const applyRequiredFunc = function (
 const headTail = function (callingContext, fs, { option, count, files }) {
   let { existsSync } = fs;
   if (isInvalid(count)) {
-    return throwError(callingContext, option, count);
+    return countOffsetError(callingContext, option, count);
   }
   let contentExtractor = extractRequiredContent.bind(
     null,
