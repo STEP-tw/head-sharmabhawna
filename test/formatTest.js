@@ -1,5 +1,5 @@
 const { equal } = require("assert");
-const { generateHeader, addHeader } = require("../src/formatText.js");
+const { generateHeader, addHeader } = require("../src/format.js");
 
 describe("generateHeader", function () {
     it("should return header of given file name", function () {

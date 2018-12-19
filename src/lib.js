@@ -1,6 +1,6 @@
 const { take, last } = require("./util.js");
 const { isInvalid, countOffsetError, existanceError } = require("./errorHandler.js");
-const { addHeader } = require("./formatText.js");
+const { addHeader } = require("./format.js");
 
 const selectDelimiter = function (option) {
   return option == "c" ? "" : "\n";
