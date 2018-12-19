@@ -1,13 +1,12 @@
+const onlyFilesSpecified = function (firstArg) {
+  return !firstArg.startsWith("-");
+};
 const hasNoOption = function (firstArg) {
   return !isNaN(firstArg[1]);
 };
 
 const hasOptionWithcount = function (firstArg) {
-  return !isNaN(firstArg[2]);
-};
-
-const hasOptionWithoutcount = function (secondArg) {
-  return !isNaN(secondArg);
+  return firstArg.length > 2;
 };
 
 const getDefaultOptionAndCount = function (userInputs) {
@@ -28,7 +27,9 @@ const pasreOptionWithoutCount = function (userInputs) {
 
 const parse = function (userInputs) {
   let firstArg = userInputs[0];
-  let secondArg = userInputs[1];
+  if (onlyFilesSpecified(firstArg)) {
+    return getDefaultOptionAndCount(userInputs);
+  }
 
   if (hasNoOption(firstArg)) {
     return getDefaultOption(userInputs);
@@ -38,11 +39,7 @@ const parse = function (userInputs) {
     return pasreOptionWithCount(userInputs);
   }
 
-  if (hasOptionWithoutcount(secondArg)) {
-    return pasreOptionWithoutCount(userInputs);
-  }
-  return getDefaultOptionAndCount(userInputs);
-
+  return pasreOptionWithoutCount(userInputs);
 };
 
 module.exports = { parse };
