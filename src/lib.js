@@ -1,4 +1,6 @@
 const { take, last } = require("./util.js");
+const { isInvalid, throwError } = require("./errorHandler.js");
+
 const selectDelimiter = function (option) {
   return option == "c" ? "" : "\n";
 };
@@ -22,10 +24,6 @@ const extractRequiredContent = function (
 const extractContent = function (fs, fileName) {
   let { readFileSync } = fs;
   return readFileSync(fileName, "utf8");
-};
-
-const isInvalid = function (count) {
-  return count == 0 || isNaN(count);
 };
 
 const extractFileContent = function (
@@ -89,15 +87,9 @@ const applyRequiredFunc = function (
 };
 
 const headTail = function (callingContext, fs, { option, count, files }) {
-  let offsetError = "tail: illegal offset -- ";
-  let lineCountError = "head: illegal line count -- ";
-  let byteCountError = "head: illegal byte count -- ";
   let { existsSync } = fs;
   if (isInvalid(count)) {
-    if (callingContext == "tail") {
-      return count == 0 ? "" : offsetError + count;
-    }
-    return option == "n" ? lineCountError + count : byteCountError + count;
+    return throwError(callingContext, option, count);
   }
   let contentExtractor = extractRequiredContent.bind(
     null,
@@ -115,7 +107,6 @@ const tail = headTail.bind(null, "tail");
 module.exports = {
   selectDelimiter,
   generateHeader,
-  isInvalid,
   extractRequiredContent,
   extractContent,
   extractFileContent,

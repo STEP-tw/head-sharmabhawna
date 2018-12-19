@@ -3,7 +3,6 @@ const { equal } = require("assert");
 const {
   selectDelimiter,
   generateHeader,
-  isInvalid,
   extractRequiredContent,
   extractContent,
   extractFileContent,
@@ -50,20 +49,6 @@ describe("selectDelimiter", function () {
 describe("generateHeader", function () {
   it("should return header of given file name", function () {
     equal(generateHeader("symbols"), "==> symbols <==");
-  });
-});
-
-describe("isInvalid", function () {
-  it("should return true when count is 0", function () {
-    equal(isInvalid(0), true);
-  });
-
-  it("should return true when count is not a number", function () {
-    equal(isInvalid("10x"), true);
-  });
-
-  it("should return false when count is number", function () {
-    equal(isInvalid(10), false);
   });
 });
 
