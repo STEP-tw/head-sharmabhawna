@@ -44,7 +44,7 @@ describe("throwError", function () {
 
     describe("context: tail", function () {
         describe("when option is n", function () {
-            it("should return blank line when count is 0", function () {
+            it("should return empty string when count is 0", function () {
                 equal(throwError("tail", "n", 0), "");
             });
 
@@ -55,7 +55,7 @@ describe("throwError", function () {
         });
 
         describe("when option is c", function () {
-            it("should return blank line when count is 0", function () {
+            it("should return empty string when count is 0", function () {
                 equal(throwError("tail", "c", 0), "");
             });
 
