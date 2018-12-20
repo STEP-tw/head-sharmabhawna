@@ -31,29 +31,29 @@ const extractFileContent = function (
   callingContext,
   existanceChecker,
   contentExtractor,
-  file
+  fileName
 ) {
-  if (!existanceChecker(file)) {
-    return existanceError(callingContext, file);
+  if (!existanceChecker(fileName)) {
+    return existanceError(callingContext, fileName);
   }
-  return contentExtractor(file);
+  return contentExtractor(fileName);
 };
 
 const extractFilesContent = function (
   callingContext,
   existanceChecker,
   contentExtractor,
-  files
+  fileNames
 ) {
-  return files
-    .map(function (file) {
+  return fileNames
+    .map(function (fileName) {
       let content = extractFileContent(
         callingContext,
         existanceChecker,
         contentExtractor,
-        file
+        fileName
       );
-      return formatContent(file, content);
+      return formatContent(fileName, content);
     })
     .join("\n");
 };
