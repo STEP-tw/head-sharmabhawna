@@ -2,11 +2,15 @@ const generateHeader = function (fileName) {
     return "==> " + fileName + " <==";
 };
 
-const addHeader = function (fileName, text) {
-    if (text.match(/: No such file or directory/)) {
-        return text;
-    }
-    return generateHeader(fileName) + "\n" + text;
+const addHeader = function (fileName, content) {
+    return generateHeader(fileName) + "\n" + content;
 };
 
-module.exports = { generateHeader, addHeader };
+const formatContent = function (fileName, content) {
+    if (content.match(/No such file or directory/)) {
+        return content;
+    }
+    return addHeader(fileName, content);
+};
+
+module.exports = { generateHeader, addHeader, formatContent };
