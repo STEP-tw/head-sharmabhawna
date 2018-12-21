@@ -10,6 +10,8 @@ const {
   tail
 } = require("../src/lib.js");
 
+const { take, last } = require("../src/util.js");
+
 const areMatched = function (arg1, arg2) {
   return arg1 === arg2;
 };
@@ -58,29 +60,29 @@ describe("extractContent", function () {
 describe("extractRequiredContent", function () {
   describe("context: head", function () {
     it("should return empty string when file is empty", function () {
-      equal(extractRequiredContent("head", mockedFS, "n", 2, "numbers"), "");
+      equal(extractRequiredContent(take, mockedFS, "n", 2, "numbers"), "");
     });
 
     it("should return first n lines of file when option is n", function () {
-      equal(extractRequiredContent("head", mockedFS, "n", 2, "symbols"), "*\n@");
+      equal(extractRequiredContent(take, mockedFS, "n", 2, "symbols"), "*\n@");
     });
 
     it("should return first n bytes of file when option is c", function () {
-      equal(extractRequiredContent("head", mockedFS, "c", 2, "symbols"), "*\n");
+      equal(extractRequiredContent(take, mockedFS, "c", 2, "symbols"), "*\n");
     });
   });
 
   describe("context: tail", function () {
     it("should return empty string when file is empty", function () {
-      equal(extractRequiredContent("tail", mockedFS, "n", 2, "numbers"), "");
+      equal(extractRequiredContent(last, mockedFS, "n", 2, "numbers"), "");
     });
 
     it("should return last n lines of file when option is n", function () {
-      equal(extractRequiredContent("tail", mockedFS, "n", 2, "symbols"), "$\n#");
+      equal(extractRequiredContent(last, mockedFS, "n", 2, "symbols"), "$\n#");
     });
 
     it("should last return n bytes of file when option is c", function () {
-      equal(extractRequiredContent("tail", mockedFS, "c", 2, "symbols"), "\n#");
+      equal(extractRequiredContent(last, mockedFS, "c", 2, "symbols"), "\n#");
     });
   });
 });
@@ -89,7 +91,7 @@ describe("extractFileContent", function () {
   let existanceCheckerFn = mockedFS.existsSync;
 
   describe("context: head", function () {
-    let contentExtractorFn = extractRequiredContent.bind("null", "head", mockedFS, "n", 2);
+    let contentExtractorFn = extractRequiredContent.bind("null", take, mockedFS, "n", 2);
     let extractContent = extractFileContent.bind("null", "head", existanceCheckerFn, contentExtractorFn);
 
     it("should throw existance error for non-existing file", function () {
@@ -106,7 +108,7 @@ describe("extractFileContent", function () {
     });
 
     it("should return first n bytes of file when option is c", function () {
-      let contentExtractorFn = extractRequiredContent.bind("null", "head", mockedFS, "c", 2);
+      let contentExtractorFn = extractRequiredContent.bind("null", take, mockedFS, "c", 2);
       let extractContent = extractFileContent.bind("null", "head", existanceCheckerFn, contentExtractorFn);
       equal(extractContent("symbols"), "*\n")
     });
@@ -114,7 +116,7 @@ describe("extractFileContent", function () {
   });
 
   describe("context: tail", function () {
-    let contentExtractorFn = extractRequiredContent.bind("null", "tail", mockedFS, "n", 2);
+    let contentExtractorFn = extractRequiredContent.bind("null", last, mockedFS, "n", 2);
     let extractContent = extractFileContent.bind("null", "tail", existanceCheckerFn, contentExtractorFn);
 
     it("should throw existance error for non-existing file", function () {
@@ -131,7 +133,7 @@ describe("extractFileContent", function () {
     });
 
     it("should return last n bytes of file when option is c", function () {
-      let contentExtractorFn = extractRequiredContent.bind("null", "tail", mockedFS, "c", 2);
+      let contentExtractorFn = extractRequiredContent.bind("null", last, mockedFS, "c", 2);
       let extractContent = extractFileContent.bind("null", "tail", existanceCheckerFn, contentExtractorFn);
       equal(extractContent("symbols"), "\n#")
     });
@@ -142,7 +144,7 @@ describe("extractFilesContent", function () {
   let existanceCheckerFn = mockedFS.existsSync;
 
   describe("context: head", function () {
-    let contentExtractorFn = extractRequiredContent.bind("null", "head", mockedFS, "n", 2);
+    let contentExtractorFn = extractRequiredContent.bind("null", take, mockedFS, "n", 2);
     let extractContent = extractFilesContent.bind("null", "head", existanceCheckerFn, contentExtractorFn);
 
     it("should throw existance error for non existing files", function () {
@@ -166,14 +168,14 @@ describe("extractFilesContent", function () {
     });
 
     it("should return first n bytes of all files seperated by their names when option is c", function () {
-      let contentExtractorFn = extractRequiredContent.bind("null", "head", mockedFS, "c", 2);
+      let contentExtractorFn = extractRequiredContent.bind("null", take, mockedFS, "c", 2);
       let extractContent = extractFilesContent.bind("null", "head", existanceCheckerFn, contentExtractorFn);
       let expectedOutput = "==> symbols <==\n*\n\n==> vowels <==\na\n"
       equal(extractContent(["symbols", "vowels"]), expectedOutput);
     });
   });
   describe("context: tail", function () {
-    let contentExtractorFn = extractRequiredContent.bind("null", "tail", mockedFS, "n", 2);
+    let contentExtractorFn = extractRequiredContent.bind("null", last, mockedFS, "n", 2);
     let extractContent = extractFilesContent.bind("null", "tail", existanceCheckerFn, contentExtractorFn);
 
     it("should throw existance error for non existing files", function () {
@@ -197,7 +199,7 @@ describe("extractFilesContent", function () {
     });
 
     it("should return last n bytes of all files seperated by their names when option is c", function () {
-      let contentExtractorFn = extractRequiredContent.bind("null", "tail", mockedFS, "c", 2);
+      let contentExtractorFn = extractRequiredContent.bind("null", last, mockedFS, "c", 2);
       let extractContent = extractFilesContent.bind("null", "tail", existanceCheckerFn, contentExtractorFn);
       let expectedOutput = "==> symbols <==\n\n#\n==> vowels <==\n\nu"
       equal(extractContent(["symbols", "vowels"]), expectedOutput);

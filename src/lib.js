@@ -7,7 +7,7 @@ const selectDelimiter = function (option) {
 };
 
 const extractRequiredContent = function (
-  callingContext,
+  slicer,
   fs,
   option,
   count,
@@ -15,10 +15,7 @@ const extractRequiredContent = function (
 ) {
   let delimiter = selectDelimiter(option);
   let contents = extractContent(fs, fileName).split(delimiter);
-  let requiredContents = last(contents, count);
-  if (callingContext == "head") {
-    requiredContents = take(contents, count);
-  }
+  requiredContents = slicer(contents, count);
   return requiredContents.join(delimiter);
 };
 
@@ -85,13 +82,11 @@ const headTail = function (callingContext, fs, { option, count, files }) {
   if (isInvalid(count)) {
     return countOffsetError(callingContext, option, count);
   }
-  let contentExtractor = extractRequiredContent.bind(
-    null,
-    callingContext,
-    fs,
-    option,
-    count
-  );
+  const extractHeadContent = extractRequiredContent.bind("null", take, fs, option, count);
+  const extractTailContent = extractRequiredContent.bind("null", last, fs, option, count);
+
+  let requiredContentExtractor = { "head": extractHeadContent, "tail": extractTailContent };
+  let contentExtractor = requiredContentExtractor[callingContext];
   return applyRequiredFunc(callingContext, existsSync, contentExtractor, files);
 };
 
