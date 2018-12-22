@@ -6,9 +6,7 @@ const addHeader = function (fileName, content) {
     return generateHeader(fileName) + "\n" + content;
 };
 
-const formatContent = function (fileDetail) {
-    let fileName = fileDetail[0];
-    let content = fileDetail[1];
+const formatContent = function ([fileName, content]) {
     if (content.match(/No such file or directory/)) {
         return content;
     }
