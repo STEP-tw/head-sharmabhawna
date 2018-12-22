@@ -1,6 +1,6 @@
-const { take, last } = require("./util.js");
+const { take, last, zip } = require("./util.js");
 const { isInvalid, countOffsetError, existanceError } = require("./errors.js");
-const { formatContent } = require("./format.js");
+const { formatData } = require("./format.js");
 
 const selectDelimiter = function (option) {
   return option == "c" ? "" : "\n";
@@ -42,17 +42,10 @@ const extractFilesContent = function (
   contentExtractor,
   fileNames
 ) {
-  return fileNames
-    .map(function (fileName) {
-      let content = extractFileContent(
-        callingContext,
-        existanceChecker,
-        contentExtractor,
-        fileName
-      );
-      return formatContent(fileName, content);
-    })
-    .join("\n");
+  let getContent = extractFileContent.bind("null", callingContext, existanceChecker, contentExtractor);
+  let contents = fileNames.map(getContent);
+  let filesDetail = zip(fileNames, contents);
+  return formatData(filesDetail);
 };
 
 const applyRequiredFunc = function (
