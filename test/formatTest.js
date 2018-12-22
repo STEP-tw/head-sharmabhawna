@@ -29,7 +29,10 @@ describe("formatContent", function () {
 });
 
 describe("formatData", function () {
-    it("should return content of files seperated by their names", function () {
+    it("should return content of file without header if only one file is given", function () {
+        equal(formatData([["vowels", "a\ne"]]), "a\ne");
+    });
+    it("should return content of files seperated by their names as header", function () {
         let filesDetail = [["vowels", "a\ne"], ["letters", "head: letters: No such file or directory"], ["numbers", ""]];
         let expectedOutput = "==> vowels <==\na\ne\nhead: letters: No such file or directory\n==> numbers <==\n";
         equal(formatData(filesDetail), expectedOutput);

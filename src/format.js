@@ -16,6 +16,10 @@ const formatContent = function (fileDetail) {
 };
 
 const formatData = function (filesDetail) {
+    if (filesDetail.length == 1) {
+        let firstFileContent = filesDetail[0][1];
+        return firstFileContent;
+    }
     return filesDetail.map(formatContent).join("\n");
 };
 

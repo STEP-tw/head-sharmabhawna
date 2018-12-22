@@ -48,28 +48,6 @@ const extractFilesContent = function (
   return formatData(filesDetail);
 };
 
-const applyRequiredFunc = function (
-  callingContext,
-  existanceChecker,
-  contentExtractor,
-  files
-) {
-  if (files.length == 1) {
-    return extractFileContent(
-      callingContext,
-      existanceChecker,
-      contentExtractor,
-      files[0]
-    );
-  }
-  return extractFilesContent(
-    callingContext,
-    existanceChecker,
-    contentExtractor,
-    files
-  );
-};
-
 const headTail = function (callingContext, fs, { option, count, files }) {
   let { existsSync } = fs;
   if (isInvalid(count)) {
@@ -80,7 +58,7 @@ const headTail = function (callingContext, fs, { option, count, files }) {
 
   let requiredContentExtractor = { "head": extractHeadContent, "tail": extractTailContent };
   let contentExtractor = requiredContentExtractor[callingContext];
-  return applyRequiredFunc(callingContext, existsSync, contentExtractor, files);
+  return extractFilesContent(callingContext, existsSync, contentExtractor, files);
 };
 
 const head = headTail.bind(null, "head");
