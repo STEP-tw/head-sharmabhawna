@@ -18,13 +18,13 @@ describe("formatContent", function () {
     it("should return text without header when text is existance error", function () {
         let text = "head: letters: No such file or directory";
         let expectedOutput = "head: letters: No such file or directory";
-        equal(formatContent("letters", text), expectedOutput);
+        equal(formatContent(["letters", text]), expectedOutput);
     });
 
     it("should return text with file name as header", function () {
         let text = "$\n%";
         let expectedOutput = "==> symbols <==\n$\n%";
-        equal(formatContent("symbols", text), expectedOutput);
+        equal(formatContent(["symbols", text]), expectedOutput);
     });
 });
 
