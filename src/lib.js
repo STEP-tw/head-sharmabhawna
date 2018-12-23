@@ -37,14 +37,13 @@ const generateFileDetail = function (
   return { fileName, exists, content };
 };
 
-const extractFilesContent = function (
-  callingContext,
+const generateFilesDetail = function (
   existanceChecker,
   contentExtractor,
   fileNames
 ) {
-  let getContent = generateFileDetail.bind("null", callingContext, existanceChecker, contentExtractor);
-  return fileNames.map(getContent);
+  let extractDetail = generateFileDetail.bind("null", existanceChecker, contentExtractor);
+  return fileNames.map(extractDetail);
 
 };
 
@@ -58,7 +57,7 @@ const headTail = function (callingContext, fs, { option, count, files }) {
 
   let requiredContentExtractor = { "head": extractHeadContent, "tail": extractTailContent };
   let contentExtractor = requiredContentExtractor[callingContext];
-  let contents = extractFilesContent(callingContext, existsSync, contentExtractor, files);
+  let contents = generateFilesDetail(existsSync, contentExtractor, files);
   let filesDetail = zip(files, contents);
   return formatData(filesDetail);
 };
@@ -71,7 +70,7 @@ module.exports = {
   extractRequiredContent,
   extractContent,
   generateFileDetail,
-  extractFilesContent,
+  generateFilesDetail,
   head,
   tail
 };

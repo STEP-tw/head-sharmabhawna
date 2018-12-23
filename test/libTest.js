@@ -5,7 +5,7 @@ const {
   extractRequiredContent,
   extractContent,
   generateFileDetail,
-  extractFilesContent,
+  generateFilesDetail,
   head,
   tail
 } = require("../src/lib.js");
@@ -87,7 +87,7 @@ describe("extractRequiredContent", function () {
   });
 });
 
-describe.only("generateFileDetail", function () {
+describe("generateFileDetail", function () {
   let existanceCheckerFn = mockedFS.existsSync;
   let contentExtractorFn = extractRequiredContent.bind("null", take, mockedFS, "n", 2);
   let extractDetail = generateFileDetail.bind("null", existanceCheckerFn, contentExtractorFn);
@@ -103,70 +103,14 @@ describe.only("generateFileDetail", function () {
   });
 });
 
-describe("extractFilesContent", function () {
+describe.only("generateFilesDetail", function () {
   let existanceCheckerFn = mockedFS.existsSync;
+  let contentExtractorFn = extractRequiredContent.bind("null", take, mockedFS, "n", 2);
+  let extractDetails = generateFilesDetail.bind("null", existanceCheckerFn, contentExtractorFn);
 
-  describe("context: head", function () {
-    let contentExtractorFn = extractRequiredContent.bind("null", take, mockedFS, "n", 2);
-    let extractContent = extractFilesContent.bind("null", "head", existanceCheckerFn, contentExtractorFn);
-
-    it("should return array of existance errors for non existing files", function () {
-      let expectedOutput = ["head: letters: No such file or directory", "head: characters: No such file or directory"];
-      deepEqual(extractContent(["letters", "characters"]), expectedOutput);
-    });
-
-    it("should return array of empty strings when files are empty", function () {
-      let expectedOutput = ["", ""];
-      deepEqual(extractContent(["numbers", "operators"]), expectedOutput);
-    });
-
-    it("should return array of error for non existing files and first n lines of existing files when option is n", function () {
-      let expectedOutput = ["a\ne", "head: characters: No such file or directory", "*\n@"];
-      deepEqual(extractContent(["vowels", "characters", "symbols"]), expectedOutput);
-    });
-
-    it("should return array of first n lines of all files when opton is n", function () {
-      let expectedOutput = ["*\n@", "a\ne"];
-      deepEqual(extractContent(["symbols", "vowels"]), expectedOutput);
-    });
-
-    it("should return array of first n bytes of all files when option is c", function () {
-      let contentExtractorFn = extractRequiredContent.bind("null", take, mockedFS, "c", 2);
-      let extractContent = extractFilesContent.bind("null", "head", existanceCheckerFn, contentExtractorFn);
-      let expectedOutput = ["*\n", "a\n"];
-      deepEqual(extractContent(["symbols", "vowels"]), expectedOutput);
-    });
-  });
-  describe("context: tail", function () {
-    let contentExtractorFn = extractRequiredContent.bind("null", last, mockedFS, "n", 2);
-    let extractContent = extractFilesContent.bind("null", "tail", existanceCheckerFn, contentExtractorFn);
-
-    it("should return array of existance errors for non existing files", function () {
-      let expectedOutput = ["tail: letters: No such file or directory", "tail: characters: No such file or directory"];
-      deepEqual(extractContent(["letters", "characters"]), expectedOutput);
-    });
-
-    it("should return array of empty strings when files are empty", function () {
-      let expectedOutput = ["", ""];
-      deepEqual(extractContent(["numbers", "operators"]), expectedOutput);
-    });
-
-    it("should return array of error for non existing files and last n lines of existing files when option is n", function () {
-      let expectedOutput = ["o\nu", "tail: characters: No such file or directory", "$\n#"];
-      deepEqual(extractContent(["vowels", "characters", "symbols"]), expectedOutput);
-    });
-
-    it("should return array of last n lines of all files when opton is n", function () {
-      let expectedOutput = ["$\n#", "o\nu"];
-      deepEqual(extractContent(["symbols", "vowels"]), expectedOutput);
-    });
-
-    it("should return array of last n bytes of all files when option is c", function () {
-      let contentExtractorFn = extractRequiredContent.bind("null", last, mockedFS, "c", 2);
-      let extractContent = extractFilesContent.bind("null", "tail", existanceCheckerFn, contentExtractorFn);
-      let expectedOutput = ["\n#", "\nu"];
-      deepEqual(extractContent(["symbols", "vowels"]), expectedOutput);
-    });
+  it("should return array of objects of all files which has key information about file", function () {
+    let expectedOutput = [{ "fileName": "letters", "exists": false, "content": "" }, { "fileName": "vowels", "exists": true, "content": "a\ne" }];
+    deepEqual(extractDetails(["letters", "vowels"]), expectedOutput);
   });
 });
 
