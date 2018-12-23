@@ -4,7 +4,7 @@ const {
   selectDelimiter,
   extractRequiredContent,
   extractContent,
-  extractFileContent,
+  generateFileDetail,
   extractFilesContent,
   head,
   tail
@@ -87,56 +87,19 @@ describe("extractRequiredContent", function () {
   });
 });
 
-describe("extractFileContent", function () {
+describe.only("generateFileDetail", function () {
   let existanceCheckerFn = mockedFS.existsSync;
+  let contentExtractorFn = extractRequiredContent.bind("null", take, mockedFS, "n", 2);
+  let extractDetail = generateFileDetail.bind("null", existanceCheckerFn, contentExtractorFn);
 
-  describe("context: head", function () {
-    let contentExtractorFn = extractRequiredContent.bind("null", take, mockedFS, "n", 2);
-    let extractContent = extractFileContent.bind("null", "head", existanceCheckerFn, contentExtractorFn);
-
-    it("should throw existance error for non-existing file", function () {
-      let expectedOutput = "head: letters: No such file or directory";
-      equal(extractContent("letters"), expectedOutput);
-    });
-
-    it("should return empty string when file is empty", function () {
-      equal(extractContent("numbers"), "");
-    });
-
-    it("should return first n lines of file when option is n", function () {
-      equal(extractContent("symbols"), "*\n@")
-    });
-
-    it("should return first n bytes of file when option is c", function () {
-      let contentExtractorFn = extractRequiredContent.bind("null", take, mockedFS, "c", 2);
-      let extractContent = extractFileContent.bind("null", "head", existanceCheckerFn, contentExtractorFn);
-      equal(extractContent("symbols"), "*\n")
-    });
-
+  it("should return file name with false existance and empty string as content when file is not present", function () {
+    let expectedOutput = { "fileName": "letters", "exists": false, "content": "" };
+    deepEqual(extractDetail("letters"), expectedOutput);
   });
 
-  describe("context: tail", function () {
-    let contentExtractorFn = extractRequiredContent.bind("null", last, mockedFS, "n", 2);
-    let extractContent = extractFileContent.bind("null", "tail", existanceCheckerFn, contentExtractorFn);
-
-    it("should throw existance error for non-existing file", function () {
-      let expectedOutput = "tail: letters: No such file or directory";
-      equal(extractContent("letters"), expectedOutput);
-    });
-
-    it("should return empty string when file is empty", function () {
-      equal(extractContent("numbers"), "");
-    });
-
-    it("should return last n lines of file when option is n", function () {
-      equal(extractContent("symbols"), "$\n#")
-    });
-
-    it("should return last n bytes of file when option is c", function () {
-      let contentExtractorFn = extractRequiredContent.bind("null", last, mockedFS, "c", 2);
-      let extractContent = extractFileContent.bind("null", "tail", existanceCheckerFn, contentExtractorFn);
-      equal(extractContent("symbols"), "\n#")
-    });
+  it("should return file name with true existance and its content when file is present", function () {
+    let expectedOutput = { "fileName": "vowels", "exists": true, "content": "a\ne" };
+    deepEqual(extractDetail("vowels"), expectedOutput);
   });
 });
 

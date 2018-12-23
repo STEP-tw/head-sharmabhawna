@@ -24,16 +24,17 @@ const extractContent = function (fs, fileName) {
   return readFileSync(fileName, "utf8");
 };
 
-const extractFileContent = function (
-  callingContext,
+const generateFileDetail = function (
   existanceChecker,
   contentExtractor,
   fileName
 ) {
-  if (!existanceChecker(fileName)) {
-    return existanceError(callingContext, fileName);
+  let exists = existanceChecker(fileName);
+  let content = "";
+  if (exists) {
+    content = contentExtractor(fileName);
   }
-  return contentExtractor(fileName);
+  return { fileName, exists, content };
 };
 
 const extractFilesContent = function (
@@ -42,7 +43,7 @@ const extractFilesContent = function (
   contentExtractor,
   fileNames
 ) {
-  let getContent = extractFileContent.bind("null", callingContext, existanceChecker, contentExtractor);
+  let getContent = generateFileDetail.bind("null", callingContext, existanceChecker, contentExtractor);
   return fileNames.map(getContent);
 
 };
@@ -69,7 +70,7 @@ module.exports = {
   selectDelimiter,
   extractRequiredContent,
   extractContent,
-  extractFileContent,
+  generateFileDetail,
   extractFilesContent,
   head,
   tail
