@@ -43,9 +43,8 @@ const extractFilesContent = function (
   fileNames
 ) {
   let getContent = extractFileContent.bind("null", callingContext, existanceChecker, contentExtractor);
-  let contents = fileNames.map(getContent);
-  let filesDetail = zip(fileNames, contents);
-  return formatData(filesDetail);
+  return fileNames.map(getContent);
+
 };
 
 const headTail = function (callingContext, fs, { option, count, files }) {
@@ -58,7 +57,9 @@ const headTail = function (callingContext, fs, { option, count, files }) {
 
   let requiredContentExtractor = { "head": extractHeadContent, "tail": extractTailContent };
   let contentExtractor = requiredContentExtractor[callingContext];
-  return extractFilesContent(callingContext, existsSync, contentExtractor, files);
+  let contents = extractFilesContent(callingContext, existsSync, contentExtractor, files);
+  let filesDetail = zip(files, contents);
+  return formatData(filesDetail);
 };
 
 const head = headTail.bind(null, "head");
