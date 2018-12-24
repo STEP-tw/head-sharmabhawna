@@ -1,11 +1,11 @@
 const onlyFilesSpecified = function (firstArg) {
   return !firstArg.startsWith("-");
 };
-const hasNoOption = function (firstArg) {
+const isOnlyCount = function (firstArg) {
   return !isNaN(firstArg[1]);
 };
 
-const hasOptionWithcount = function (firstArg) {
+const isOptionWithCount = function (firstArg) {
   return firstArg.length > 2;
 };
 
@@ -24,12 +24,12 @@ const parse = function (userInputs) {
   }
   files = userInputs.slice(1);
 
-  if (hasNoOption(firstArg)) {
+  if (isOnlyCount(firstArg)) {
     let count = firstArg.slice(1);
     return createFormat(option, count, files);
   }
 
-  if (hasOptionWithcount(firstArg)) {
+  if (isOptionWithCount(firstArg)) {
     let option = firstArg.slice(1, 2);
     let count = firstArg.slice(2);
     return createFormat(option, count, files);
