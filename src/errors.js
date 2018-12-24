@@ -11,12 +11,10 @@ const countOffsetError = function (callingContext, option, count) {
     let lineCountError = "head: illegal line count -- ";
     let byteCountError = "head: illegal byte count -- ";
 
-    if (isInvalid(count)) {
-        if (callingContext == "tail") {
-            return count == 0 ? "" : offsetError + count;
-        }
-        return option == "n" ? lineCountError + count : byteCountError + count;
+    if (callingContext == "tail") {
+        return count == 0 ? "" : offsetError + count;
     }
+    return option == "n" ? lineCountError + count : byteCountError + count;
 }
 
 const illegalOptionError = function (callingContext, option) {
@@ -26,9 +24,7 @@ const illegalOptionError = function (callingContext, option) {
     let headErrorMsg = errorMsg + "\n" + headUsageMsg;
     let tailErrorMsg = errorMsg + "\n" + tailUsageMsg;
 
-    if (isIllegal(option)) {
-        return (callingContext == "head") ? headErrorMsg : tailErrorMsg;
-    }
+    return (callingContext == "head") ? headErrorMsg : tailErrorMsg;
 };
 
 const existanceError = function (callingContext, file) {
