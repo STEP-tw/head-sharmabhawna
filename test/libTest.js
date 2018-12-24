@@ -115,6 +115,13 @@ describe("generateFilesDetail", function () {
 });
 
 describe("head", function () {
+  it("should throw illegal option error when option is illegal(neither n nor c)", function () {
+    let parsedInputs = { option: "p", count: 0, files: ["symbols"] };
+    let expectedOutput = "head: illegal option -- p\n";
+    expectedOutput += "usage: head [-n lines | -c bytes] [file ...]";
+    equal(head(mockedFS, parsedInputs), expectedOutput);
+  });
+
   describe("should throw line count error when option is n", function () {
     it("and count is zero", function () {
       let parsedInputs = { option: "n", count: 0, files: ["symbols"] };
@@ -199,6 +206,13 @@ describe("head", function () {
 });
 
 describe("tail", function () {
+  it("should throw illegal option error when option is illegal(neither n nor c)", function () {
+    let parsedInputs = { option: "p", count: 0, files: ["symbols"] };
+    let expectedOutput = "tail: illegal option -- p\n";
+    expectedOutput += "usage: tail [-F | -f | -r] [-q] [-b # | -c # | -n #] [file ...]";
+    equal(tail(mockedFS, parsedInputs), expectedOutput);
+  });
+
   describe("should throw offset error when count is not a number", function () {
     it("and option is n", function () {
       let parsedInputs = { option: "n", count: "1x", files: ["symbols"] };

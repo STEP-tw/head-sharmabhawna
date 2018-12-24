@@ -1,5 +1,5 @@
 const { equal } = require("assert");
-const { isInvalid, countOffsetError, existanceError } = require("../src/errors.js");
+const { isInvalid, countOffsetError, existanceError, isIllegal, illegalOptionError } = require("../src/errors.js");
 
 describe("isInvalid", function () {
     it("should return true when count is 0", function () {
@@ -77,4 +77,31 @@ describe("existanceError", function () {
         let expectedOutput = "tail: characters: No such file or directory";
         equal(existanceError("tail", "characters"), expectedOutput);
     });
+});
+
+describe("isIllegal", function () {
+    it("should return true if option is neither n nor c", function () {
+        equal(isIllegal("p"), true);
+        equal(isIllegal("x"), true);
+    });
+
+    it("should return false if option is either n or c", function () {
+        equal(isIllegal("n"), false);
+        equal(isIllegal("c"), false);
+    });
+});
+
+describe("illegalOptionError", function () {
+    it("should return head's illegal option error when callingContext is head for illegal option", function () {
+        let expectedOutput = "head: illegal option -- p\n";
+        expectedOutput += "usage: head [-n lines | -c bytes] [file ...]";
+        equal(illegalOptionError("head", "p"), expectedOutput);
+    });
+
+    it("should return tail's illegal option error when callingContext is tail for illegal option", function () {
+        let expectedOutput = "tail: illegal option -- p\n";
+        expectedOutput += "usage: tail [-F | -f | -r] [-q] [-b # | -c # | -n #] [file ...]";
+        equal(illegalOptionError("tail", "p"), expectedOutput);
+    });
+
 });
