@@ -1,3 +1,5 @@
+const { existanceError } = require("./errors.js");
+
 const generateHeader = function (fileName) {
     return "==> " + fileName + " <==";
 };
@@ -6,19 +8,26 @@ const addHeader = function (fileName, content) {
     return generateHeader(fileName) + "\n" + content;
 };
 
-const formatContent = function ([fileName, content]) {
-    if (content.match(/No such file or directory/)) {
+const singleFileFormater = function (callingContext, { fileName, exists, content }) {
+    if (exists) {
         return content;
+    }
+    return existanceError(callingContext, fileName)
+};
+
+const formatContent = function (callingContext, { fileName, exists, content }) {
+    if (!exists) {
+        return existanceError(callingContext, fileName);
     }
     return addHeader(fileName, content);
 };
 
-const formatData = function (filesDetail) {
+const formatData = function (callingContext, filesDetail) {
+    let formater = formatContent.bind("null", callingContext);
     if (filesDetail.length == 1) {
-        let firstFileContent = filesDetail[0][1];
-        return firstFileContent;
+        return singleFileFormater(callingContext, filesDetail[0]);
     }
-    return filesDetail.map(formatContent).join("\n");
+    return filesDetail.map(formater).join("\n");
 };
 
-module.exports = { generateHeader, addHeader, formatContent, formatData };
+module.exports = { generateHeader, addHeader, singleFileFormater, formatContent, formatData };

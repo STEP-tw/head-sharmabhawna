@@ -103,7 +103,7 @@ describe("generateFileDetail", function () {
   });
 });
 
-describe.only("generateFilesDetail", function () {
+describe("generateFilesDetail", function () {
   let existanceCheckerFn = mockedFS.existsSync;
   let contentExtractorFn = extractRequiredContent.bind("null", take, mockedFS, "n", 2);
   let extractDetails = generateFilesDetail.bind("null", existanceCheckerFn, contentExtractorFn);

@@ -57,9 +57,8 @@ const headTail = function (callingContext, fs, { option, count, files }) {
 
   let requiredContentExtractor = { "head": extractHeadContent, "tail": extractTailContent };
   let contentExtractor = requiredContentExtractor[callingContext];
-  let contents = generateFilesDetail(existsSync, contentExtractor, files);
-  let filesDetail = zip(files, contents);
-  return formatData(filesDetail);
+  let details = generateFilesDetail(existsSync, contentExtractor, files);
+  return formatData(callingContext, details);
 };
 
 const head = headTail.bind(null, "head");
