@@ -115,41 +115,6 @@ describe("generateFilesDetail", function () {
 });
 
 describe("head", function () {
-  it("should throw illegal option error when option is illegal(neither n nor c)", function () {
-    let parsedInputs = { option: "p", count: 0, files: ["symbols"] };
-    let expectedOutput = "head: illegal option -- p\n";
-    expectedOutput += "usage: head [-n lines | -c bytes] [file ...]";
-    equal(head(mockedFS, parsedInputs), expectedOutput);
-  });
-
-  describe("should throw line count error when option is n", function () {
-    it("and count is zero", function () {
-      let parsedInputs = { option: "n", count: 0, files: ["symbols"] };
-      let expectedOutput = "head: illegal line count -- 0";
-      equal(head(mockedFS, parsedInputs), expectedOutput);
-    });
-
-    it("and count is not a number", function () {
-      let parsedInputs = { option: "n", count: "1x", files: ["symbols"] };
-      let expectedOutput = "head: illegal line count -- 1x";
-      equal(head(mockedFS, parsedInputs), expectedOutput);
-    });
-  });
-
-  describe("should throw byte count error when option is c", function () {
-    it("and count is zero", function () {
-      let parsedInputs = { option: "c", count: 0, files: ["symbols"] };
-      let expectedOutput = "head: illegal byte count -- 0";
-      equal(head(mockedFS, parsedInputs), expectedOutput);
-    });
-
-    it("and count is not a number", function () {
-      let parsedInputs = { option: "c", count: "1x", files: ["symbols"] };
-      let expectedOutput = "head: illegal byte count -- 1x";
-      equal(head(mockedFS, parsedInputs), expectedOutput);
-    });
-  });
-
   describe("when single file is given", function () {
     it("should throw existance error for non-existing file", function () {
       let parsedInputs = { option: "n", count: 2, files: ["letters"] };
@@ -206,39 +171,6 @@ describe("head", function () {
 });
 
 describe("tail", function () {
-  it("should throw illegal option error when option is illegal(neither n nor c)", function () {
-    let parsedInputs = { option: "p", count: 0, files: ["symbols"] };
-    let expectedOutput = "tail: illegal option -- p\n";
-    expectedOutput += "usage: tail [-F | -f | -r] [-q] [-b # | -c # | -n #] [file ...]";
-    equal(tail(mockedFS, parsedInputs), expectedOutput);
-  });
-
-  describe("should throw offset error when count is not a number", function () {
-    it("and option is n", function () {
-      let parsedInputs = { option: "n", count: "1x", files: ["symbols"] };
-      let expectedOutput = "tail: illegal offset -- 1x";
-      equal(tail(mockedFS, parsedInputs), expectedOutput);
-    });
-
-    it("and option is c", function () {
-      let parsedInputs = { option: "c", count: "1x", files: ["symbols"] };
-      let expectedOutput = "tail: illegal offset -- 1x";
-      equal(tail(mockedFS, parsedInputs), expectedOutput);
-    });
-  });
-
-  describe("should return empty string when count is 0", function () {
-    it("and option is n", function () {
-      let parsedInputs = { option: "n", count: 0, files: ["symbols"] };
-      equal(tail(mockedFS, parsedInputs), "");
-    });
-
-    it("and option is n", function () {
-      let parsedInputs = { option: "c", count: 0, files: ["symbols"] };
-      equal(tail(mockedFS, parsedInputs), "");
-    });
-  });
-
   describe("when single file is given", function () {
     it("should throw existance error for non-existing file", function () {
       let parsedInputs = { option: "n", count: 2, files: ["letters"] };

@@ -1,5 +1,5 @@
 const { equal } = require("assert");
-const { isInvalid, countOffsetError, existanceError, isIllegal, illegalOptionError } = require("../src/errors.js");
+const { isInvalid, countOffsetError, existanceError, isIllegal, illegalOptionError, isAnyArgInvalid } = require("../src/errors.js");
 
 describe("isInvalid", function () {
     it("should return true when count is 0", function () {
@@ -104,4 +104,17 @@ describe("illegalOptionError", function () {
         equal(illegalOptionError("tail", "p"), expectedOutput);
     });
 
+});
+
+describe("isAnyArgInvalid", function () {
+    it("should return true if any of the arg(count and option) is invalid", function () {
+        equal(isAnyArgInvalid("p", 10), true);
+        equal(isAnyArgInvalid("n", 0), true);
+        equal(isAnyArgInvalid("p", 0), true);
+    });
+
+    it("should return false if none of the arg(count and option) is invalid", function () {
+        equal(isAnyArgInvalid("n", 10), false);
+        equal(isAnyArgInvalid("c", 10), false);
+    });
 });

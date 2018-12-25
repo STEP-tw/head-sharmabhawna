@@ -1,5 +1,4 @@
 const { take, last, zip } = require("./util.js");
-const { isInvalid, countOffsetError, isIllegal, illegalOptionError } = require("./errors.js");
 const { formatData } = require("./format.js");
 
 const selectDelimiter = function (option) {
@@ -49,14 +48,6 @@ const generateFilesDetail = function (
 
 const headTail = function (callingContext, fs, { option, count, files }) {
   let { existsSync } = fs;
-  if (isIllegal(option)) {
-    return illegalOptionError(callingContext, option);
-  }
-
-  if (isInvalid(count)) {
-    return countOffsetError(callingContext, option, count);
-  }
-
   const extractHeadContent = extractRequiredContent.bind("null", take, fs, option, count);
   const extractTailContent = extractRequiredContent.bind("null", last, fs, option, count);
 

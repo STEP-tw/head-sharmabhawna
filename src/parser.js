@@ -1,3 +1,5 @@
+const { isAnyArgInvalid } = require("./errors.js")
+
 const isOnlyOption = function (firstArg) {
   return firstArg.startsWith("-") && isNaN(firstArg[1]);
 };
@@ -10,8 +12,8 @@ const isOptionWithCount = function (firstArg) {
   return firstArg.startsWith("-") && firstArg.length > 2;
 };
 
-const createFormat = function (option, count, files) {
-  return { option, count, files };
+const createFormat = function (option, count, files, argError) {
+  return { option, count, files, argError };
 };
 
 const parse = function (userInputs) {
@@ -39,7 +41,8 @@ const parse = function (userInputs) {
     count = firstArg.slice(1);
     files = userInputs.slice(1);
   }
-  return createFormat(option, count, files);
+  let argError = isAnyArgInvalid(option, count);
+  return createFormat(option, count, files, argError);
 };
 
 module.exports = { parse };

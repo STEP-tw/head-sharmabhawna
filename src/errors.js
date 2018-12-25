@@ -6,6 +6,10 @@ const isIllegal = function (option) {
     return option != "c" && option != "n";
 };
 
+const isAnyArgInvalid = function (option, count) {
+    return isIllegal(option) || isInvalid(count);
+};
+
 const countOffsetError = function (callingContext, option, count) {
     let offsetErrorMsg = "tail: illegal offset -- ";
     let lineCountErrorMsg = "head: illegal line count -- ";
@@ -32,8 +36,20 @@ const illegalOptionError = function (callingContext, option) {
     return (callingContext == "head") ? headErrorMsg : tailErrorMsg;
 };
 
+const invalidArgError = function (callingContext, option, count) {
+    if (isIllegal(option)) {
+        return illegalOptionError(callingContext, option);
+    }
+    if (isInvalid(count)) {
+        return countOffsetError(callingContext, option, count);
+    }
+};
+
+const headInvalidArgError = invalidArgError.bind("null", "head");
+const tailInvalidArgError = invalidArgError.bind("null", "tail");
+
 const existanceError = function (callingContext, file) {
     return `${callingContext}: ${file}: No such file or directory`;
 };
 
-module.exports = { isInvalid, countOffsetError, existanceError, isIllegal, illegalOptionError };
+module.exports = { isInvalid, countOffsetError, existanceError, isIllegal, illegalOptionError, isAnyArgInvalid, headInvalidArgError, tailInvalidArgError }
